@@ -19,7 +19,6 @@ export default function ConstellationBox(){
 
     //read the constallation relevant to page
 
-
     //edges can be inactive or active
 
     //add and remove active edges and apply correct styling
@@ -49,11 +48,64 @@ export default function ConstellationBox(){
 
     // click an edge to choose it, click again to unchoose it
     function toggleEdge(index) {
-        if (chosenEdges.includes(index)) {
+
+       if (chosenEdges.includes(index)) {
+
             setChosenEdges(chosenEdges.filter((i) => i !== index));
         } else {
+
             setChosenEdges([...chosenEdges, index]);
         }
+    }
+
+    function chooseEdge(index){
+
+        //make sure is not picking node
+        if (pickingStart) return;
+
+        //allow for deselect
+        if (chosenEdges.includes(index)) {
+
+            const topStack = chosenEdges[chosenEdges.length - 1];
+
+            if(index === topStack){
+                toggleEdge(index);
+            }
+
+            return;
+
+        }
+
+        const edge = stars.edges[index];
+        const start = edge[0];
+        const end = edge[1];
+
+        //check if fist edge connected to first node
+        if(chosenEdges.length===0){
+            if(start ===startNode || end === startNode){
+                toggleEdge(index);
+            }
+            return;
+        }
+
+        //check is connected
+
+        const isConnected = chosenEdges.some((edgeIndex) =>{
+            const [a,b] = stars.edges[edgeIndex];
+
+            return(
+                start === a ||
+                start ===b ||
+                end === a ||
+                end === b
+            )
+        })
+
+        if(isConnected){
+            toggleEdge(index);
+        }
+
+
     }
 
     // click a star to start from it - only works before a start is picked
@@ -100,7 +152,7 @@ export default function ConstellationBox(){
             <g
                 key={index}
                 className={edgeIsChosen ? "star-edge chosen" : "star-edge"}
-                onClick={() => toggleEdge(index)}
+                onClick={() => chooseEdge(index)}
             >
                 {/* the line you see */}
                 <line className="star-edge__line" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
