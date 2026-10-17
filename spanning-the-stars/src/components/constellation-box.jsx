@@ -1,12 +1,7 @@
 import { useState } from "react";
 import "../assets/styles/constellation-box.css";
 
-const stars = {
-    points : [ [0.5, 0], [0.975,0.345],[0.794,0.904],[0.206,0.904],[0.02,0.345]],
-    edges : [[0,2,12],[2,4,4], [4,1,3],[1,3,400],[3,0,1]]
-}
-
-export default function ConstellationBox(){
+export default function ConstellationBox({stars}){
 
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);

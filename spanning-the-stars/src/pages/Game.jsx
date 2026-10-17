@@ -3,6 +3,7 @@ import CodeBox from "../components/code-box";
 import InfoBox from "../components/info-box";
 import ConstellationBox from '../components/constellation-box';
 import "../assets/styles/game.css";
+import { getConstellation } from "../get_constellation";
 
 // testng code lines - replace with diff algorithms
 const lines = [
@@ -16,13 +17,13 @@ export default function Game() {
   useEffect(() => {
     console.log("creating stars")
     const stars = createStars();
-
     // remove the stars when leaving the page, so they don't pile up
     return () => stars.forEach((star) => star.remove());
   }, []);
 
   // is the code box showing?
   const [showCode, setShowCode] = useState(false);
+  const starData = getConstellation("tutorial1")
 
   // runs when the Hint button is clicked - shows/hides the code box
   function handleHint() {
@@ -42,7 +43,7 @@ export default function Game() {
         <p>Explore the universe...</p>
 
         <div className="game-constellation">
-          <ConstellationBox />
+          <ConstellationBox stars={starData}/>
         </div>
 
         <div className="game-buttons">
