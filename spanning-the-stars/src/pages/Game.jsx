@@ -21,7 +21,7 @@ export default function Game() {
       <button>Hint</button>
       <button>Done</button>
 
-        <ConstellationBox />
+        <ConstellationBox/>
     </div>
   
   );
