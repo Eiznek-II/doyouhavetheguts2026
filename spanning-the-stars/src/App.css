@@ -17,6 +17,19 @@
   }
 }
 
+.star {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% {opacity: 0.8; }
+    50% { opacity: 0.3;}
+}
+
 .hero {
   position: relative;
 

@@ -13,13 +13,6 @@ const lines = [
 ];
 
 export default function Game() {
-  useEffect(() => {
-    console.log("creating stars")
-    const stars = createStars();
-
-    // remove the stars when leaving the page, so they don't pile up
-    return () => stars.forEach((star) => star.remove());
-  }, []);
 
   // is the code box showing?
   const [showCode, setShowCode] = useState(false);
@@ -56,24 +49,4 @@ export default function Game() {
       <CodeBox lines={lines} highlightLine={0} isOpen={showCode} />
     </div>
   );
-}
-
-function createStars(){
-  const numStars = 100
-  const stars = [];
-  for (let i=0; i < numStars; i++){
-    const star = document.createElement('div');
-    star.classList.add('star');
-
-    const size = Math.random() * 3 + 1;
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.left = `${Math.random() * 100}vw`;
-    star.style.top = `${Math.random() * 100}vh`;
-    star.style.animationDuration = `${Math.random() * 2 + 1}s`;
-
-    document.body.appendChild(star);
-    stars.push(star);
-  }
-  return stars;
 }
