@@ -58,38 +58,26 @@ export default function ConstellationBox(){
         }
     }
 
-    function chooseEdge(index){
+    // can this edge be clicked right now?
+    function canChooseEdge(index){
 
         //make sure is not picking node
-        if (pickingStart) return;
+        if (pickingStart) return false;
 
-        //allow for deselect
+        //allow for deselect - only the last edge picked
         if (chosenEdges.includes(index)) {
-
             const topStack = chosenEdges[chosenEdges.length - 1];
-
-            if(index === topStack){
-                toggleEdge(index);
-            }
-
-            return;
-
+            return index === topStack;
         }
 
-        const edge = stars.edges[index];
-        const start = edge[0];
-        const end = edge[1];
+        const [start, end] = stars.edges[index];
 
         //check if fist edge connected to first node
         if(chosenEdges.length===0){
-            if(start ===startNode || end === startNode){
-                toggleEdge(index);
-            }
-            return;
+            return start === startNode || end === startNode;
         }
 
         //check is connected
-
         const isConnected = chosenEdges.some((edgeIndex) =>{
             const [a,b] = stars.edges[edgeIndex];
 
@@ -101,11 +89,13 @@ export default function ConstellationBox(){
             )
         })
 
-        if(isConnected){
+        return isConnected;
+    }
+
+    function chooseEdge(index){
+        if (canChooseEdge(index)) {
             toggleEdge(index);
         }
-
-
     }
 
     // click a star to start from it - only works before a start is picked
@@ -147,11 +137,16 @@ export default function ConstellationBox(){
         if (angle < -90) angle += 180;
 
         const edgeIsChosen = chosenEdges.includes(index);
+        const edgeIsChoosable = canChooseEdge(index);
+
+        let edgeClass = "star-edge";
+        if (edgeIsChosen) edgeClass += " chosen";
+        if (edgeIsChoosable) edgeClass += " choosable";
 
         return (
             <g
                 key={index}
-                className={edgeIsChosen ? "star-edge chosen" : "star-edge"}
+                className={edgeClass}
                 onClick={() => chooseEdge(index)}
             >
                 {/* the line you see */}

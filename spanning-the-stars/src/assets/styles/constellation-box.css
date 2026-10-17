@@ -10,7 +10,7 @@
     overflow: visible;
 }
 
-.star-edge {
+.star-edge.choosable {
     cursor: pointer;
 }
 
@@ -27,7 +27,7 @@
     stroke-width: 16;
 }
 
-.star-edge:hover .star-edge__line {
+.star-edge.choosable:hover .star-edge__line {
     stroke-width: 3;
     filter: drop-shadow(0 0 6px var(--bright-glow)) drop-shadow(0 0 16px var(--bright-glow));
 }
@@ -49,7 +49,7 @@
     transition: fill 0.3s, filter 0.3s;
 }
 
-.star-edge:hover .star-edge__label {
+.star-edge.choosable:hover .star-edge__label {
     filter: drop-shadow(0 0 5px var(--bright-glow)) drop-shadow(0 0 12px var(--bright-glow));
 }
 
@@ -80,7 +80,7 @@
     fill: transparent;
 }
 
-.star-node:hover .star-node__dot {
+.picking-start .star-node:hover .star-node__dot {
     filter: drop-shadow(0 0 8px var(--bright-glow)) drop-shadow(0 0 20px var(--bright-glow));
 }
 
