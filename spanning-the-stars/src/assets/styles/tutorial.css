@@ -15,3 +15,12 @@
 .next-button:hover {
     background: #6547D5;
 }
+
+.tutorial_buttom_left {
+    width: 300px;
+    vertical-align: left;
+}
+.tutorial_button_right {
+    width: 300px;
+    vertical-align: right;
+}
