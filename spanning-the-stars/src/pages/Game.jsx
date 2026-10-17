@@ -22,31 +22,39 @@ export default function Game() {
     return () => stars.forEach((star) => star.remove());
   }, []);
 
-  // which line is green right now (0 = first line)
-  const [highlightLine, setHighlightLine] = useState(0);
+  // is the code box showing?
+  const [showCode, setShowCode] = useState(false);
 
-  const isLastLine = highlightLine === lines.length - 1;
-
-  // runs when the Next button is clicked
-  function handleNext() {
-    setHighlightLine(highlightLine + 1);
+  // runs when the Hint button is clicked - shows/hides the code box
+  function handleHint() {
+    setShowCode(!showCode);
   }
 
   return (
-    <div>
-      <h1>Game Page</h1>
-      <p>a game will be here soon!.</p>
+    <div className="game-layout">
+      {/* left panel */}
+      <aside className="game-left-panel">
+        <InfoBox />
+      </aside>
 
-      <CodeBox lines={lines} highlightLine={highlightLine} />
-      <InfoBox />
-      <h1>Spanning the Stars</h1>
-      <p>Explore the universe...</p>
-      <button onClick={handleNext} disabled={isLastLine}>
-        Hint
-      </button>
-      <button>Done</button>
+      {/* middle */}
+      <main className="game-main">
+        <h1>Spanning the Stars</h1>
+        <p>Explore the universe...</p>
 
-      <ConstellationBox />
+        <div className="game-constellation">
+          <ConstellationBox />
+        </div>
+
+        <div className="game-buttons">
+          <button onClick={handleHint}>
+            Hint
+          </button>
+          <button>Done</button>
+        </div>
+      </main>
+
+      <CodeBox lines={lines} highlightLine={0} isOpen={showCode} />
     </div>
   );
 }

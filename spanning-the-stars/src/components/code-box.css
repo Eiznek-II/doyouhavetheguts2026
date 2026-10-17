@@ -1,0 +1,36 @@
+.code-box {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  width: 320px;
+  height: 180px;
+  padding: 12px 0;
+  box-sizing: border-box;
+  background: #0d0d0d;
+  color: #e6e6e6;
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  text-align: left;
+
+  transform: translateX(calc(100% + 5px));
+  transition: transform 0.3s ease-out; /* ANIMATION */
+}
+
+.code-box--open {
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .code-box {
+    position: static;
+    width: 100%;
+    transform: none;
+    transition: none;
+    display: none;
+  }
+
+  .code-box--open {
+    display: block;
+  }
+}
