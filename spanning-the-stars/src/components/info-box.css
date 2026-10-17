@@ -1,0 +1,33 @@
+
+.info-box {
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 1px solid #33445f;
+  border-radius: 12px;
+  background: #151f33;
+  color: #f0f6ff;
+  width: 10%;
+}
+
+.info-box__button {
+  width: 100%;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.info-box__button:hover {
+  background: #22314c;
+}
+
+.info-box__content {
+  padding: 15px;
+  color: #c5d2e5;
+}
