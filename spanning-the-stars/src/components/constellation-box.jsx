@@ -1,10 +1,21 @@
 import { useState } from "react";
 import "../assets/styles/constellation-box.css";
 
+const stars = {
+    points : [ [0.5, 0], [0.975,0.345],[0.794,0.904],[0.206,0.904],[0.02,0.345]],
+    edges : [[0,2,12],[2,4,4], [4,1,3],[1,3,400],[3,0,1]]
+}
+
 export default function ConstellationBox(){
+
+    // the star the player starts from (null = not picked yet)
+    const [startNode, setStartNode] = useState(null);
 
     // the edges the player has clicked (golden)
     const [chosenEdges, setChosenEdges] = useState([]);
+
+    // at the beginning, the player can only pick a starting star
+    const pickingStart = startNode === null;
 
     //read the constallation relevant to page
 
@@ -23,11 +34,6 @@ export default function ConstellationBox(){
     //start up animation showing the original
 
     //animate teaching alien along with psudocode
-
-    const stars = {
-        points : [ [0.5, 0], [0.975,0.345],[0.794,0.904],[0.206,0.904],[0.02,0.345]],
-        edges : [[0,2,12],[2,4,4], [4,1,3],[1,3,400],[3,0,1]]
-    }
 
     //get size of box - might need to change this if we want website to be reactive, might need to update page
     const width = 400;
@@ -50,8 +56,18 @@ export default function ConstellationBox(){
         }
     }
 
-    // a node is golden if any chosen edge touches it
+    // click a star to start from it - only works before a start is picked
+    function pickStart(nodeIndex) {
+        if (pickingStart) {
+            setStartNode(nodeIndex);
+        }
+    }
+
+    // a node is golden if it's the start, or any chosen edge touches it
     function nodeIsChosen(nodeIndex) {
+        if (nodeIndex === startNode) {
+            return true;
+        }
         return chosenEdges.some((edgeIndex) => {
             const [start, end] = stars.edges[edgeIndex];
             return start === nodeIndex || end === nodeIndex;
@@ -83,17 +99,23 @@ export default function ConstellationBox(){
 
     //draw nodes
     const nodeElements = nodes.map((node,index) =>(
-        <circle
+        <g
             key={index}
             className={nodeIsChosen(index) ? "star-node chosen" : "star-node"}
-            cx={node.x}
-            cy={node.y}
-            r={5}
-        />
+            onClick={() => pickStart(index)}
+        >
+            {/* the star you see */}
+            <circle className="star-node__dot" cx={node.x} cy={node.y} r={5} />
+            {/* a bigger invisible circle, so the star is easy to click */}
+            <circle className="star-node__hit-area" cx={node.x} cy={node.y} r={14} />
+        </g>
     ))
 
     return(
-        <svg className="constellation" viewBox={`0 0 ${width} ${height}`}>
+        <svg
+            className={pickingStart ? "constellation picking-start" : "constellation"}
+            viewBox={`0 0 ${width} ${height}`}
+        >
             {edgeElements}
             {nodeElements}
         </svg>
