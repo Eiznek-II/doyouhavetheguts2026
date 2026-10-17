@@ -1,0 +1,17 @@
+.next-button {
+    padding: 10px 18px;
+    background: #17152E;
+    border: 1px solid #6547D5;
+    border-radius: 8px;
+
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: background 0.2s ease;
+}
+.next-button:hover {
+    background: #6547D5;
+}
