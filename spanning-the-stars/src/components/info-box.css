@@ -39,4 +39,5 @@
 .info-box__content {
   padding: 15px;
   color: #c5d2e5;
+  white-space: pre-line;
 }
