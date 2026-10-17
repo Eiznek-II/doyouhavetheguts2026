@@ -4,13 +4,12 @@ import Game from './pages/Game'
 import About from './pages/About'
 
 import './App.css'
+import Navbar from './components/nav-bar'
 
 function App() {
   return (
     <>
-      <nav>
-        <Link to="/">Home</Link> | <Link to="/game">Game</Link> | <Link to="/about">About</Link>
-      </nav>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
