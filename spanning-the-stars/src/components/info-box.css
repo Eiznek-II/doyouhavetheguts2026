@@ -6,13 +6,15 @@
   border-radius: 12px;
   background: #151f33;
   color: #f0f6ff;
-  width: 10%;
+  width: 100%;
 }
 
 .info-box__button {
   width: 100%;
+  box-sizing: border-box;
   padding: 18px;
   display: flex;
+  gap: 12px;
   justify-content: space-between;
   align-items: center;
   border: none;
@@ -21,10 +23,17 @@
   font-size: 16px;
   text-align: left;
   cursor: pointer;
+  border-radius: 0;
+}
+
+.info-box__button::before {
+  content: none;
 }
 
 .info-box__button:hover {
   background: #22314c;
+  transform: none;
+  box-shadow: none;
 }
 
 .info-box__content {

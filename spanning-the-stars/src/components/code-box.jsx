@@ -1,19 +1,4 @@
-// code box stile
-const boxStyle = {
-  position: 'fixed',
-  bottom: '5px',
-  right: '5px',
-  width: '320px',
-  height: '180px',
-  padding: '12px 0',
-  boxSizing: 'border-box',
-  background: '#0d0d0d',
-  color: '#e6e6e6',
-  borderRadius: '10px',
-  fontFamily: 'var(--mono)', // the code font from index.css
-  fontSize: '13px',
-  textAlign: 'left',
-}
+import './code-box.css'
 
 // every line is the same height, so we know where to slide the green bar
 const LINE_HEIGHT = 22
@@ -48,9 +33,10 @@ const highlightBarStyle = {
 
 // lines:         the text to show, one string per line
 // highlightLine: which line is green (0 = first line)
-export default function CodeBox({ lines, highlightLine }) {
+// isOpen:        true = slid in, false = hidden off the right side of the screen
+export default function CodeBox({ lines, highlightLine, isOpen }) {
   return (
-    <div style={boxStyle}>
+    <div className={isOpen ? 'code-box code-box--open' : 'code-box'}>
       <div style={linesStyle}>
         {/* move the bar down one line height per line */}
         <div
