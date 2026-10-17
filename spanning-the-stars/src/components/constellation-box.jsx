@@ -75,11 +75,24 @@ export default function ConstellationBox(){
     }
 
     //create edges and draw them
-    const edgeElements = stars.edges.map(([start,end], index)=>
+    const edgeElements = stars.edges.map(([start,end,weight], index)=>
     {
         //start and end nodes
         const a = nodes[start];
         const b = nodes[end];
+
+        const labelX = (a.x + b.x) / 2;
+        const labelY = (a.y + b.y) / 2;
+        const labelWidth = 10 + String(weight).length * 8;
+
+        const length = Math.hypot(b.x - a.x, b.y - a.y);
+        const gap = labelWidth / 2 + 4;
+        const gapX = ((b.x - a.x) / length) * gap;
+        const gapY = ((b.y - a.y) / length) * gap;
+
+        let angle = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+        if (angle > 90) angle -= 180;
+        if (angle < -90) angle += 180;
 
         const edgeIsChosen = chosenEdges.includes(index);
 
@@ -90,9 +103,18 @@ export default function ConstellationBox(){
                 onClick={() => toggleEdge(index)}
             >
                 {/* the line you see */}
-                <line className="star-edge__line" x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+                <line className="star-edge__line" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
+                <line className="star-edge__line" x1={labelX + gapX} y1={labelY + gapY} x2={b.x} y2={b.y} />
                 {/* a wider invisible line, so the edge is easy to hover and click */}
                 <line className="star-edge__hit-area" x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+                <text
+                    className="star-edge__label"
+                    x={labelX}
+                    y={labelY}
+                    transform={`rotate(${angle} ${labelX} ${labelY})`}
+                >
+                    {weight}
+                </text>
             </g>
         )
     })
@@ -104,7 +126,13 @@ export default function ConstellationBox(){
             className={nodeIsChosen(index) ? "star-node chosen" : "star-node"}
             onClick={() => pickStart(index)}
         >
-            {/* the star you see */}
+            <circle
+                className="star-node__halo"
+                cx={node.x}
+                cy={node.y}
+                r={14}
+                style={{ animationDelay: `${index * 0.6}s` }}
+            />
             <circle className="star-node__dot" cx={node.x} cy={node.y} r={5} />
             {/* a bigger invisible circle, so the star is easy to click */}
             <circle className="star-node__hit-area" cx={node.x} cy={node.y} r={14} />
