@@ -41,18 +41,34 @@
 
 /* NODE STARS */
 
-.star-node {
+.star-node__dot {
     fill: var(--star-white);
     filter: drop-shadow(0 0 4px var(--soft-glow));
     transition: fill 0.3s, filter 0.3s;
 }
 
-.star-node:hover {
+.star-node__hit-area {
+    fill: transparent;
+}
+
+.star-node:hover .star-node__dot {
     filter: drop-shadow(0 0 8px var(--bright-glow));
 }
 
 /* PICKED */
-.star-node.chosen {
+.star-node.chosen .star-node__dot {
     fill: var(--gold);
     filter: drop-shadow(0 0 8px var(--gold-glow));
+}
+
+/* PICKING THE START STAR */
+
+/* stars are clickable */
+.picking-start .star-node {
+    cursor: pointer;
+}
+
+/* edges can't be hovered or clicked yet */
+.picking-start .star-edge {
+    pointer-events: none;
 }
