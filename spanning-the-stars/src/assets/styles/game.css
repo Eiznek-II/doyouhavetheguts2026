@@ -21,13 +21,16 @@ body {
     50% { opacity: 0.3;}
 }
 
-h1 {
+h1, h2 {
     font-family: 'Obitron', sans-serif;
     font-weight: 700;
     letter-spacing: 2px;
     color: #FFFFFF;
 
     text-shadow: 0 0 10px #48ddfb;
+}
+h2 {
+    font-weight: 500;
 }
 
 
