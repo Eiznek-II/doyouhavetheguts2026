@@ -4,7 +4,7 @@ import "./info-box.css";
 const sections = [
         {
           title: "History of the Prim-Jarnik Algorithm",
-          content: "history...",
+          content: "The algorithm was devloped in 1930 by a mathmatician called Vojtěch Jarník. Later was rediscovered by Joseph Kruskal in 1956, Robert C. Prim in 1957 and Edgar W. Dijkstra in 1959. Therefore this algorithm has a lot of names.",
         },
         {
           title: "What is a minimum spanning tree (MST)?",
