@@ -14,13 +14,8 @@ export default function Game() {
   // which line is green right now (0 = first line)
   const [highlightLine, setHighlightLine] = useState(0);
 
-  const isFirstLine = highlightLine === 0;
   const isLastLine = highlightLine === lines.length - 1;
 
-  // runs when the Previous button is clicked
-  function handlePrevious() {
-    setHighlightLine(highlightLine - 1);
-  }
 
   // runs when the Next button is clicked
   function handleNext() {
@@ -32,11 +27,8 @@ export default function Game() {
       <h1>Game Page</h1>
       <p>a game will be here soon!.</p>
 
-      <button onClick={handlePrevious} disabled={isFirstLine}>
-        ↑ Previous
-      </button>
       <button onClick={handleNext} disabled={isLastLine}>
-        ↓ Next
+        ↓ Hint
       </button>
 
       <CodeBox lines={lines} highlightLine={highlightLine} />
