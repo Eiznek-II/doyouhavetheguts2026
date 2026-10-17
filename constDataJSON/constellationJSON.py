@@ -51,7 +51,6 @@ for i in constellations["constellations"]:
 
     if len(stars) <=20 and len(stars) > 5:
         actual_constellations[i['common_name']['native']] = {"points": [[star_x_pos[i],star_y_pos[i] ] for i in range(len(star_x_pos))], "edges":edges}
-    break
 
 print(actual_constellations)
 print(len(actual_constellations['Andromeda']['points']))
