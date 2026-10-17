@@ -2,9 +2,9 @@
 body {
     background-image: linear-gradient(to bottom right, #39206B, #172554,
                                         #0B1026);
+    background-attachment: fixed; /* gradient stays put while scrolling */
     margin: 0;
-    overflow: hidden;
-    height: 100vh;
+    min-height: 100vh; /* at least one screen tall, but can grow and scroll */
     position: relative;
 }
 
