@@ -1,3 +1,5 @@
+import InfoBox from "../components/info-box";
+
 import "../assets/styles/game.css";
 import { useEffect } from "react";
 
@@ -9,6 +11,9 @@ export default function Game() {
   
   return (
     <div>
+      <h1>Game Page</h1>
+      <p>a game will be here soon!.</p>
+      <InfoBox />
       <h1>Spanning the Stars</h1>
       <p>Explore the universe...</p>
       <button>Hint</button>
