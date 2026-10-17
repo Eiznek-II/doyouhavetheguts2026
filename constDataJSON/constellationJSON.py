@@ -35,10 +35,11 @@ for i in constellations["constellations"]:
             if star not in stars:
                 stars[star] = len(stars)
                 star_data = earth.at(t).observe(Star.from_dataframe(df.loc[star]))
+                a_x, a_y, a_z = star_data.radec()
+                star_x_pos.append(a_x.radians)
+                star_y_pos.append(a_y.radians)
             x,y,z = star_data.frame_xyz(skyfield.framelib.itrs).m
-            a_x, a_y, a_z = star_data.radec()
-            star_x_pos.append(a_x.radians)
-            star_y_pos.append(a_y.radians)
+            
             if ii >0:
                 edges.append([previous_star,stars[star],ly_conv*magnitude([x-prev_x,y-prev_y,z-prev_z]) ])
             previous_star = stars[star]
@@ -48,10 +49,12 @@ for i in constellations["constellations"]:
         star_y_pos = [(y - min(star_y_pos)) for y in star_y_pos]
         star_y_pos = [(y / max(star_y_pos)) for y in star_y_pos]
 
-    if len(stars) <=20:
+    if len(stars) <=20 and len(stars) > 5:
         actual_constellations[i['common_name']['native']] = {"points": [[star_x_pos[i],star_y_pos[i] ] for i in range(len(star_x_pos))], "edges":edges}
-    
+    break
 
+print(actual_constellations)
+print(len(actual_constellations['Andromeda']['points']))
 actual_constellations_string = json.dumps(actual_constellations)
 with open("constellations.json", "w", encoding="utf-8") as f:
     f.write(actual_constellations_string)
