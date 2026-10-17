@@ -1,39 +1,21 @@
 "use client";
 
-import {useEffect, useRef} from "react";
+import { useState} from "react";
 
 export default function ContsallationBox(){
-    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
+    //read the constallation relevant to page
 
-        if (!canvas) return;
+    //create nodes
 
-        const ctx = canvas.getContext("2d");
+    //create edges
 
-        if (!ctx) return;
+    //on node hover glow
 
-        ctx.strokeStyle = "#8600ee"
-        ctx.fillStyle = "#ffff00";
+    //edges can be inactive or active
 
-        ctx.beginPath();
-        ctx.arc(100, 100, 50, 0, Math.PI * 2);
-        ctx.fill();
+    //start up animation showing the original constellation
 
-    }, []);
-
-    return (
-        <div className="canvas">
-            <h1>canvas here</h1>
-            <canvas id="mainCanvas"
-                    ref={canvasRef}
-                    width={600}
-                    height={600}
-            />
-        </div>
-    )
-    })
 
 
 
