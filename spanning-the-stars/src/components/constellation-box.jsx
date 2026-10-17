@@ -1,7 +1,9 @@
-//import { useState} from "react";
+import { useState} from "react";
 
 export default function ContsallationBox(){
 
+    const [selectedEdge, setSelectedEdge] = useState(null);
+    const [selectedNode, setSelectedNode] = useState(null);
     //read the constallation relevant to page
 
     //create nodes
@@ -33,6 +35,7 @@ export default function ContsallationBox(){
         id,
         x: padding + x * (width-padding*2),
         y:padding + y * (height-padding*2),
+
     }))
 
     //create edges and draw them
@@ -41,6 +44,8 @@ export default function ContsallationBox(){
         //start and end nodes
         const a = nodes[start];
         const b =nodes[end];
+
+        const edgeIsSelected = selectedEdge === index;
 
         return (
             <line
@@ -52,11 +57,32 @@ export default function ContsallationBox(){
                 x2={b.x}
                 y2={b.y}
 
-                stroke="white"
-                strokeWidth={2}
+                stroke={edgeIsSelected ? "royalblue" : "white"}
+                onMouseEnter={() => setSelectedEdge(index)}
+                onMouseLeave={() => setSelectedEdge(null)}
+                style={{ cursor: "pointer" }}
+                strokeWidth={edgeIsSelected ? 4 : 2}
 
             />
         )
+    })
+
+    const nodeElements = nodes.map((node,index) =>{
+        const nodeIsSelected = selectedNode === index;
+        return (
+
+            <circle
+            key ={index}
+            cx={node.x}
+            cy={node.y}
+            r={5}
+            stroke={"white"}
+            fill={nodeIsSelected ? "royalblue" : "white"}
+            onMouseEnter={() => setSelectedNode(index)}
+            onMouseLeave={() => setSelectedNode(null)}
+            style={{ cursor: "pointer" }}
+            strokeWidth={2}
+        />)
     })
 
 
@@ -64,18 +90,7 @@ export default function ContsallationBox(){
         <svg viewBox={`0 0 ${width} ${height}`}>
 
         {edges}
-
-        {nodes.map((node)=> (
-            <circle
-                key ={node.id}
-                cx={node.x}
-                cy={node.y}
-                r={5}
-                fill={"white"}
-                stroke={"white"}
-                strokeWidth={2}
-            />
-        ))}
+            {nodeElements}
 
         </svg>
     )
