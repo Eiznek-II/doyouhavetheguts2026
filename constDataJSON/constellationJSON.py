@@ -1,5 +1,6 @@
 from skyfield.api import Star, load
 from skyfield.data import hipparcos
+from skyfield.units import Angle
 import skyfield
 import json
 import math
@@ -35,9 +36,9 @@ for i in constellations["constellations"]:
                 stars[star] = len(stars)
                 star_data = earth.at(t).observe(Star.from_dataframe(df.loc[star]))
             x,y,z = star_data.frame_xyz(skyfield.framelib.itrs).m
-            print(x,y,z)
-            star_x_pos.append(x)
-            star_y_pos.append(y)
+            a_x, a_y, a_z = star_data.radec()
+            star_x_pos.append(a_x.radians)
+            star_y_pos.append(a_y.radians)
             if ii >0:
                 edges.append([previous_star,stars[star],ly_conv*magnitude([x-prev_x,y-prev_y,z-prev_z]) ])
             previous_star = stars[star]
@@ -47,7 +48,9 @@ for i in constellations["constellations"]:
         star_y_pos = [(y - min(star_y_pos)) for y in star_y_pos]
         star_y_pos = [(y / max(star_y_pos)) for y in star_y_pos]
 
-    actual_constellations[i['common_name']['native']] = {"points": [[star_x_pos[i],star_y_pos ] for i in range(len(star_x_pos))], "edges":edges}
+    if len(stars) <=20:
+        actual_constellations[i['common_name']['native']] = {"points": [[star_x_pos[i],star_y_pos[i] ] for i in range(len(star_x_pos))], "edges":edges}
+    
 
 actual_constellations_string = json.dumps(actual_constellations)
 with open("constellations.json", "w", encoding="utf-8") as f:
