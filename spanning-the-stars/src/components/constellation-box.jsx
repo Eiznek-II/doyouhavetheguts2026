@@ -1,20 +1,29 @@
-import { useState} from "react";
+import {useState} from "react";
 
 export default function ContsallationBox(){
 
-    const [selectedEdge, setSelectedEdge] = useState(null);
+    const [hoveredEdge, setHoveredEdge] = useState(null);
+    const [hoveredNode, setHoveredNode] = useState(null);
     const [selectedNode, setSelectedNode] = useState(null);
     //read the constallation relevant to page
 
-    //create nodes
-
-    //create edges
 
     //on node hover glow
 
     //edges can be inactive or active
 
-    //start up animation showing the original constellation
+    //add and remove active edges and apply correct styling
+
+    // have weight viable, and have hover effect
+
+    //we need an alien friend
+
+    //we need the teaching alien
+
+
+    //start up animation showing the original
+
+    //animate teaching alien along with psudocode
 
 
 
@@ -45,7 +54,7 @@ export default function ContsallationBox(){
         const a = nodes[start];
         const b =nodes[end];
 
-        const edgeIsSelected = selectedEdge === index;
+        const edgeIsHovered = hoveredEdge === index;
 
         return (
             <line
@@ -57,17 +66,18 @@ export default function ContsallationBox(){
                 x2={b.x}
                 y2={b.y}
 
-                stroke={edgeIsSelected ? "royalblue" : "white"}
-                onMouseEnter={() => setSelectedEdge(index)}
-                onMouseLeave={() => setSelectedEdge(null)}
+                stroke={edgeIsHovered ? "royalblue" : "white"}
+                onMouseEnter={() => setHoveredEdge(index)}
+                onMouseLeave={() => setHoveredEdge(null)}
                 style={{ cursor: "pointer" }}
-                strokeWidth={edgeIsSelected ? 4 : 2}
+                strokeWidth={edgeIsHovered ? 4 : 2}
 
             />
         )
     })
 
     const nodeElements = nodes.map((node,index) =>{
+        const nodeIsHovered = hoveredNode === index;
         const nodeIsSelected = selectedNode === index;
         return (
 
@@ -75,11 +85,12 @@ export default function ContsallationBox(){
             key ={index}
             cx={node.x}
             cy={node.y}
-            r={5}
+            r={10}
             stroke={"white"}
-            fill={nodeIsSelected ? "royalblue" : "white"}
-            onMouseEnter={() => setSelectedNode(index)}
-            onMouseLeave={() => setSelectedNode(null)}
+            fill={nodeIsSelected ? "red" : nodeIsHovered ? "royalblue" : "white"}
+            onMouseEnter={() => setHoveredNode(index)}
+            onMouseLeave={() => setHovereddNode(null)}
+            onMouseDown={() => setSelectedNode(index)}
             style={{ cursor: "pointer" }}
             strokeWidth={2}
         />)
@@ -89,7 +100,7 @@ export default function ContsallationBox(){
     return(
         <svg viewBox={`0 0 ${width} ${height}`}>
 
-        {edges}
+            {edges}
             {nodeElements}
 
         </svg>
