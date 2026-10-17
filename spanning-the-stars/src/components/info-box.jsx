@@ -3,7 +3,7 @@ import "./info-box.css";
 
 const sections = [
         {
-          title: "History of the Prim's Algorithm",
+          title: "History of the Prim-Jarnik Algorithm",
           content: "history...",
         },
         {
@@ -11,8 +11,13 @@ const sections = [
           content: "A spanning tree is a subset of a graph (or constellation!) such that all the vertices are connected using the minimum possible number of edges. A minimum spanning tree is a spanning tree that has the minimum weight among all the possible spanning trees.",
         },
         {
+<<<<<<< HEAD
           title: "What is Prim's Algorithm for MST?",
           content: "Prim's algorithm is a Greedy algorithm, meaning it makes the locally optimal choice at each step with the hope of finding a global optimum solution. In Prim's Algorithm, we start with a single node and move through several adjacent nodes, in order to explore all of the connected edges."
+=======
+          title: "What is the Prim-Jarnik Algorithm for MST?",
+          content: "Prim-Jarnik algorithm is a Greedy algorithm, meaning it makes the locally optimal choice at each step with the hope of finding a global optimum solution. In the Prim-Jarnik Algorithm, we start with a single node and move through several adjacent nodes, in order to explore all of the connected edges."
+>>>>>>> aa64e34b86735f6d791b2a314883ad99b1fae057
         }
 ];
 
