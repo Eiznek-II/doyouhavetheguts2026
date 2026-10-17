@@ -1,35 +1,43 @@
-function prims_alg(edges, numPoints, firstPoint){
+
+
+export function prims_alg(edges, numPoints, firstPoint){
     let minSpanningTree = new Set();
-    let minSpanningTreeArr = [];
-    let keys = new Array(numPoints).fill(Infinity);
-    let currentEdges = new Array(numPoints).fill(null);
-    let finalEdges = []
-    keys[firstPoint] = 0
+    let minSpanningTreeEdges = [];
+    minSpanningTree.add(firstPoint);
+    let currentEdges = new Set();
+    currentEdges = get_valid_edges(firstPoint, currentEdges, minSpanningTree);
     while (minSpanningTree.size < numPoints){
-        minVertex = 0
-        for (let i = 1;i<numPoints;i++){
-            if (keys[i] < keys[minVertex] && ! (minSpanningTree.has(keys[i]))){
-                minVertex = i
-            }
+        let newEdge = get_min_edge(edge_set);
+        minSpanningTreeEdges.push(newEdge);
+        if(minSpanningTree.has(newEdge[0])){
+            minSpanningTree.add(newEdge[1]);
+            currentEdges = get_valid_edges(newEdge[1], currentEdges, minSpanningTree);
         }
-        minSpanningTreeArr.push(minVertex)
-        minSpanningTree.add(minVertex)
-        finalEdges.push(edges[minVertex])
-        for (let i = 0; i < edges.length; i++){
-            if (edges[i][0] == minVertex ){
-                if(keys[edges[i][1]]<edges[i][2]){
-                   keys[edges[i][1]] =  keys[edges[i][1]]
-                   currentEdges[edges[i][1]] = edges[i]
-                }
-            }
-            else if (edges[i][1] == minVertex ){
-                if(keys[edges[i][0]]<edges[i][2]){
-                   keys[edges[i][0]] =  edges[i][2]
-                   currentEdges[edges[i][0]] = edges[i]
-                }
-            }
+        else{
+           minSpanningTree.add(newEdge[0]);
+            currentEdges = get_valid_edges(newEdge[0], currentEdges, minSpanningTree); 
         }
 
     }
-    return minSpanningTreeArr, finalEdges
+
+    return minSpanningTreeEdges
+}
+
+export function get_valid_edges(new_vertex, edges, edge_set, minSpanningTree){
+    for (let i = 0; i<edges.length; i++){
+        if ((edges[i][0] == new_vertex && !minSpanningTree.has(edges[i][1]) || (edges[i][0] == new_vertex && !minSpanningTree.has(edges[i][1])))){
+            edge_set.add(edges[i]);
+        }
+    }
+}
+
+export function get_min_edge(edge_set){
+    let minEdge = edge_set[0];
+    for (const edge of edge_set) {
+        if (edge[2] < minEdge[2]){
+            minEdge = edge
+        }
+    }
+    edge_set.delete(minEdge);
+    return minEdge
 }

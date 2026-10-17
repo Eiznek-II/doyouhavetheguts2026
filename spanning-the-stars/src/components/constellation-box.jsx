@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../assets/styles/constellation-box.css";
 
 export default function ConstellationBox({stars}){
@@ -29,10 +29,22 @@ export default function ConstellationBox({stars}){
 
     //animate teaching alien along with psudocode
 
-    //get size of box - might need to change this if we want website to be reactive, might need to update page
-    const width = 400;
-    const height = 400;
-    const padding = 20; // room for the glow around the outer stars
+    //get size of box - measured from the page, so the graph fills all the space it has
+    const containerRef = useRef(null);
+    const [size, setSize] = useState({ width: 400, height: 400 });
+
+    useEffect(() => {
+        const observer = new ResizeObserver(([entry]) => {
+            const boxWidth = entry.contentRect.width;
+            // as wide as the space allows, but never taller than 75% of the screen
+            setSize({ width: boxWidth, height: Math.min(boxWidth, window.innerHeight * 0.75) });
+        });
+        observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, []);
+
+    const { width, height } = size;
+    const padding = 30; // room for the glow around the outer stars
 
     //scale nodes to position in box
     const nodes = stars.points.map(([x,y],id)=> ({
@@ -182,12 +194,16 @@ export default function ConstellationBox({stars}){
     ))
 
     return(
-        <svg
-            className={pickingStart ? "constellation picking-start" : "constellation"}
-            viewBox={`0 0 ${width} ${height}`}
-        >
-            {edgeElements}
-            {nodeElements}
-        </svg>
+        <div ref={containerRef}>
+            <svg
+                className={pickingStart ? "constellation picking-start" : "constellation"}
+                width={width}
+                height={height}
+                viewBox={`0 0 ${width} ${height}`}
+            >
+                {edgeElements}
+                {nodeElements}
+            </svg>
+        </div>
     )
 }

@@ -3,7 +3,7 @@ import CodeBox from "../components/code-box";
 import InfoBox from "../components/info-box";
 import ConstellationBox from '../components/constellation-box';
 import "../assets/styles/game.css";
-import { getConstellation } from "../get_constellation";
+import { getConstellation, getRandomConstellation } from "../get_constellation";
 
 // testng code lines - replace with diff algorithms
 const lines = [
@@ -13,17 +13,18 @@ const lines = [
   'and have the minimum possible weight'
 ];
 
-export default function Game() {
+export default function Game({name=null}) {
   useEffect(() => {
     console.log("creating stars")
     const stars = createStars();
     // remove the stars when leaving the page, so they don't pile up
     return () => stars.forEach((star) => star.remove());
   }, []);
-
   // is the code box showing?
   const [showCode, setShowCode] = useState(false);
-  const starData = getConstellation("tutorial1")
+
+  // pick the constellation once - useState stops a new random one being picked on every re-render
+  const [starData] = useState(() => (name) ? { name, ...getConstellation(name) } : getRandomConstellation())
 
   // runs when the Hint button is clicked - shows/hides the code box
   function handleHint() {
@@ -39,7 +40,7 @@ export default function Game() {
 
       {/* middle */}
       <main className="game-main">
-        <h1>Spanning the Stars</h1>
+        <h1>{starData.name}</h1>
         <p>Explore the universe...</p>
 
         <div className="game-constellation">
