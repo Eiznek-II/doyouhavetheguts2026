@@ -8,7 +8,21 @@ export default function ConstellationBox(){
 
     //read the constallation relevant to page
 
-    //start up animation showing the original constellation
+
+    //edges can be inactive or active
+
+    //add and remove active edges and apply correct styling
+
+    // have weight viable, and have hover effect
+
+    //we need an alien friend
+
+    //we need the teaching alien
+
+
+    //start up animation showing the original
+
+    //animate teaching alien along with psudocode
 
     const stars = {
         points : [ [0.5, 0], [0.975,0.345],[0.794,0.904],[0.206,0.904],[0.02,0.345]],
