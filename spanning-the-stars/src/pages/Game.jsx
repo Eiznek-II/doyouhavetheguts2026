@@ -6,11 +6,10 @@ import "../assets/styles/game.css";
 
 // testng code lines - replace with diff algorithms
 const lines = [
-  'Line 1',
-  'Line 2',
-  'Line 3',
-  'Line 4',
-  'Test',
+  'the next edge you select must connect',
+  'a tree vertex (already selected)',
+  'to a non-tree vertex',
+  'and have the minimum possible weight'
 ];
 
 export default function Game() {
