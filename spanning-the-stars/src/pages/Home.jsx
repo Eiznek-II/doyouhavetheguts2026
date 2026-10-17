@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import "../assets/styles/home.css"
 
 export default function Home() {
