@@ -42,7 +42,7 @@
 .star-edge__label {
     fill: var(--star-white);
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 15px;
     text-anchor: middle;
     dominant-baseline: central;
     user-select: none;
