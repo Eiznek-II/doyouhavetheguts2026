@@ -1,6 +1,35 @@
-.home-page{
+.home-page {
     padding: 30px 20px;
     box-sizing: border-box;
+
+}
+
+.container{
+    padding: 30px 20px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.collapsible {
+    align-self: flex-start;
+    padding: 10px 18px;
+    background: #17152E;
+    border: 1px solid #6547D5;
+    border-radius: 8px;
+
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.collapsible:hover {
+    background: #6547D5;
 }
 
 div.text-box {
