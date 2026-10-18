@@ -339,6 +339,12 @@ export default function ConstellationBox({onCheckReady, stars}){
         }
     }
 
+    // return function
+    function resetConstellation() {
+        setStartNode(null);
+        setChosenEdges([]);
+    }
+
     // click a star to start from it - only works before a start is picked
     function pickStart(nodeIndex) {
         if (wasDragRef.current) return; // that was a drag, not a click
