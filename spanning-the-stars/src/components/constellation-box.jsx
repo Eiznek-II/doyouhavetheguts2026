@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { useState } from "react";
-import {useEffect} from "react";
 import "../assets/styles/constellation-box.css";
 
 const padding = 30; // room for the glow around the outer stars
@@ -52,12 +50,11 @@ function glideCamera(camera, target) {
     frameRef.current = requestAnimationFrame(step);
 }
 
-export default function ConstellationBox({stars}){
-const solution =[4,0,1,2]
+const solution = [4, 0, 1, 2]
 
 
 
-export default function ConstellationBox({onCheckReady}){
+export default function ConstellationBox({onCheckReady, stars}){
 
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);
@@ -465,6 +462,8 @@ export default function ConstellationBox({onCheckReady}){
                 <button onClick={resetView} aria-label="Reset view">⟲</button>
             </div>
         </div>
+
+    )
 
 
     function check(){

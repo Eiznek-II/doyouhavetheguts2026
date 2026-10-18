@@ -31,7 +31,7 @@ export default function Game({name=null}) {
   const [check, setCheck] = useState(() => () => {});
   function checkDone() {
     console.log("what")
-    check()
+    check();
       return
   }
 
