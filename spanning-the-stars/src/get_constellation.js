@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import jsonData from './assets/constellations.json';
-=======
-import jsonData from './assets/constellations.json' with { type: 'json' };
->>>>>>> 3bf946f9dfa72560e70f0930365320569d83e676
 
 export function getConstellation(starName){
   if (starName == "Tutorial 1"){
