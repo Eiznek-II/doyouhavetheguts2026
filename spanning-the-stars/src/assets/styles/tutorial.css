@@ -31,3 +31,7 @@
     vertical-align: right;
     padding: 10%;
 }
+.character {
+    width: 100px;
+    vertical-align: right;
+}
