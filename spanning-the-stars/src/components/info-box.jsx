@@ -25,6 +25,10 @@ const sections = [
         {
           title: "Why are the numbers like this?",
           content: "The weight on each edge is the distance between those two stars in light years - the distance light travels in a year. Sometimes the distances between stars in constellations is misleading, because a constellation is a 2-D projection of a 3-D group of stars. This is why the Prim-Jarník algorithm is so useful - minimum spanning trees can be unintuitive! "
+        },
+        {
+          title: "Help",
+          content: "You must have found the MST in the correct order by going through the algorithm, in order for your solution to be marked correct"
         }
 
 ];
