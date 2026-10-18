@@ -89,6 +89,10 @@ h2 {
   }
 }
 
+a{
+  color:white;
+}
+
 button {
   border-radius: 5px;
   position: relative;
