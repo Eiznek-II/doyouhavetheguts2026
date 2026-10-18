@@ -17,6 +17,14 @@ const sections = [
         {
           title: "Instructions",
           content: "1: Pick the node (star) you want to start. \n2: Use the Prim-Jarnik Algorithm to find the minimum spanning tree. \n3: When you are finished press Done to see if you are correct. \nReminder if you are stuck press Hint."
+        },
+        {
+          title: "Controls",
+          content: "Use the top right hand corner buttons to zoom in and out, and reset your zoom. \nClick on the vertexes and edges to select them. \nYou can click on your most recent selection again to deselect. If you want to restart, click the reset button at the bottom. \nUse the hint button for a hint, and the done button to check if you're correct!"
+        },
+        {
+          title: "Why are the numbers like this?",
+          content: "The weight on each edge is the distance between those two stars in light years - the distance light travels in a year. Sometimes the distances between stars in constellations is misleading, because a constellation is a 2-D projection of a 3-D group of stars. This is why the Prim-Jarník algorithm is so useful - minimum spanning trees can be unintuitive! "
         }
 
 ];

@@ -43,7 +43,7 @@ for i in constellations["constellations"]:
             x,y,z = star_data.frame_xyz(skyfield.framelib.itrs).m
             
             if ii >0:
-                edges.append([previous_star,stars[star],min(ly_conv*magnitude([x-prev_x,y-prev_y,z-prev_z]),1) ])
+                edges.append([previous_star,stars[star],max(ly_conv*magnitude([x-prev_x,y-prev_y,z-prev_z]),1) ])
             previous_star = stars[star]
             prev_x, prev_y, prev_z =x,y,z
         star_x_pos = [(x - min(star_x_pos)) for x in star_x_pos]
@@ -56,7 +56,8 @@ for i in constellations["constellations"]:
 
 
 actual_constellations_string = json.dumps(actual_constellations)
-with open("constellations.json", "w", encoding="utf-8") as f:
+
+with open("./spanning-the-stars/src/assets/constellations.json", "w", encoding="utf-8") as f:
     f.write(actual_constellations_string)
 
 
