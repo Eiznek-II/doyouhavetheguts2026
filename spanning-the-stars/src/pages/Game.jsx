@@ -21,17 +21,14 @@ export default function Game({name=null}) {
   let params = useParams();
   console.log(params.starName);
   console.log(params.starName == null);
-  let starArr;
 
-  if (params.starName == null){
-  // pick the constellation once - useState stops a new random one being picked on every re-render
-  starArr = useState(() => (name) ? { name, ...getConstellation(name) } : getRandomConstellation())
-  //console.log([starData]);
-  }
-  else {
-    starArr = [{name:params.starName,points:getConstellation(params.starName).points, edges:getConstellation(params.starName).edges}]
-  }
-  const [starData] = starArr
+  // hooks (useState etc.) have to be called every render, never inside an if -
+  // so always pick a random one up front, then only use it if no name was given
+  const [randomStar] = useState(() => getRandomConstellation())
+
+  // the name in the URL (/game/Cygnus) wins, then the name prop, then the random one
+  const starName = params.starName ?? name
+  const starData = starName ? { name: starName, ...getConstellation(starName) } : randomStar
   console.log(starData)
   // runs when the Hint button is clicked - shows/hides the code box
   function handleHint() {
@@ -61,7 +58,8 @@ export default function Game({name=null}) {
         <p>Explore the universe...</p>
 
         <div className="game-constellation">
-          <ConstellationBox stars={starData} onCheckReady={setCheck} />
+          {/* key = start the game fresh when the constellation changes (e.g. /game/Leo -> /game/Lyra) */}
+          <ConstellationBox key={starData.name} stars={starData} onCheckReady={setCheck} />
         </div>
 
         <div className="game-buttons">

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "../assets/styles/constellation-box.css";
+import { prims_alg } from "../prims_alg";
 
 const padding = 30; // room for the glow around the outer stars
 const MIN_ZOOM = 1;
@@ -50,20 +51,19 @@ function glideCamera(camera, target) {
     frameRef.current = requestAnimationFrame(step);
 }
 
-const solution = [4, 0, 1, 2]
 
 
 
 export default function ConstellationBox({onCheckReady, stars}){
-
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);
+    const [solution, setSolution] = useState([])
 
     // the edges the player has clicked (golden)
     const [chosenEdges, setChosenEdges] = useState([]);
 
-    //animation state
-    // const [animation, setAnimation] = useState(0)
+    //animation state - goes up by 1 every time Done is clicked, which restarts the animations
+    const [animation, setAnimation] = useState(0)
 
     //result state
     const[result,setResult] = useState(null)
@@ -288,6 +288,8 @@ export default function ConstellationBox({onCheckReady, stars}){
 
     // click an edge to choose it, click again to unchoose it
     function toggleEdge(index) {
+        // changing the answer clears the old right/wrong result
+        setResult(null);
 
        if (chosenEdges.includes(index)) {
 
@@ -340,16 +342,18 @@ export default function ConstellationBox({onCheckReady, stars}){
     }
 
     // return function
-    function resetConstellation() {
-        setStartNode(null);
-        setChosenEdges([]);
-    }
+    // function resetConstellation() {
+    //     setStartNode(null);
+    //     setChosenEdges([]);
+    // }
 
     // click a star to start from it - only works before a start is picked
     function pickStart(nodeIndex) {
         if (wasDragRef.current) return; // that was a drag, not a click
         if (pickingStart) {
             setStartNode(nodeIndex);
+            setSolution(prims_alg(stars.edges, stars.points.length, nodeIndex));
+            console.log(solution);
         }
     }
 
@@ -405,8 +409,9 @@ export default function ConstellationBox({onCheckReady, stars}){
                 }}
             >
                 {/* the line you see */}
-                <line className="star-edge__line" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
-                <line className="star-edge__line" x1={labelX + gapX} y1={labelY + gapY} x2={b.x} y2={b.y} />
+                {/* pathLength="1" lets the CSS draw-in animation work for lines of any length */}
+                <line className="star-edge__line" pathLength="1" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
+                <line className="star-edge__line" pathLength="1" x1={labelX + gapX} y1={labelY + gapY} x2={b.x} y2={b.y} />
                 {/* a wider invisible line, so the edge is easy to hover and click */}
                 <line className="star-edge__hit-area" x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
                 <text
@@ -447,7 +452,11 @@ export default function ConstellationBox({onCheckReady, stars}){
         console.log("Checking...");
         console.log(chosenEdges);
 
-        if (chosenEdges.length=== solution.length &&
+        // no start star or no edges yet = definitely not finished
+        if (pickingStart || chosenEdges.length === 0) {
+            setResult("false")
+        }
+        else if (chosenEdges.length=== solution.length &&
             chosenEdges.every(item => solution.includes(item))){
                 console.log("yay")
                 setResult("true")
@@ -458,17 +467,17 @@ export default function ConstellationBox({onCheckReady, stars}){
         }
 
         //runs animations
-        // setAnimation(run => run +1)
+        setAnimation(run => run +1)
 
     }
 
     let svgClass = "constellation";
     if (pickingStart) svgClass += " picking-start";
     if (dragging) svgClass += " dragging";
-    if (result) svgClass += result;
+    if (result) svgClass += " " + result; // needs the space, or the class becomes "constellationfalse" and every colour goes black
 
     useEffect(() => {onCheckReady(()=>check);
-    },[onCheckReady,chosenEdges])
+    },[onCheckReady,chosenEdges,solution])
 
     return(
         <div ref={containerRef} className="constellation-viewport">
@@ -483,7 +492,8 @@ export default function ConstellationBox({onCheckReady, stars}){
                 height={height}
                 viewBox={`0 0 ${width} ${height}`}
             >
-                {edgeElements}
+                {/* new key on every check = edges are rebuilt, so their CSS animations play again */}
+                <g key={animation}>{edgeElements}</g>
                 {nodeElements}
             </svg>
 
