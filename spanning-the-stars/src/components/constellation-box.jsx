@@ -50,7 +50,11 @@ function glideCamera(camera, target) {
     frameRef.current = requestAnimationFrame(step);
 }
 
-export default function ConstellationBox({stars}){
+const solution = [4, 0, 1, 2]
+
+
+
+export default function ConstellationBox({onCheckReady, stars}){
 
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);
@@ -58,8 +62,15 @@ export default function ConstellationBox({stars}){
     // the edges the player has clicked (golden)
     const [chosenEdges, setChosenEdges] = useState([]);
 
+    //animation state
+    // const [animation, setAnimation] = useState(0)
+
+    //result state
+    const[result,setResult] = useState(null)
+
     // at the beginning, the player can only pick a starting star
     const pickingStart = startNode === null;
+
 
     //read the constallation relevant to page
 
@@ -328,6 +339,12 @@ export default function ConstellationBox({stars}){
         }
     }
 
+    // return function
+    function resetConstellation() {
+        setStartNode(null);
+        setChosenEdges([]);
+    }
+
     // click a star to start from it - only works before a start is picked
     function pickStart(nodeIndex) {
         if (wasDragRef.current) return; // that was a drag, not a click
@@ -368,7 +385,8 @@ export default function ConstellationBox({stars}){
         if (angle > 90) angle -= 180;
         if (angle < -90) angle += 180;
 
-        const edgeIsChosen = chosenEdges.includes(index);
+        const edgeIsChosen = chosenEdges.includes(index)
+        const edgeOrder = chosenEdges.indexOf(index);
         const edgeIsChoosable = canChooseEdge(index);
 
         let edgeClass = "star-edge";
@@ -380,6 +398,11 @@ export default function ConstellationBox({stars}){
                 key={index}
                 className={edgeClass}
                 onClick={() => chooseEdge(index)}
+
+                //depending on order will have more delay, allows for done animations
+                style={{
+                    "--edge-delay": `${edgeOrder*2}s`
+                }}
             >
                 {/* the line you see */}
                 <line className="star-edge__line" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
@@ -418,19 +441,44 @@ export default function ConstellationBox({stars}){
         </g>
     ))
 
+
+
+    function check(){
+        console.log("Checking...");
+        console.log(chosenEdges);
+
+        if (chosenEdges.length=== solution.length &&
+            chosenEdges.every(item => solution.includes(item))){
+                console.log("yay")
+                setResult("true")
+        }
+        else{
+            setResult("false")
+            console.log ("nay")
+        }
+
+        //runs animations
+        // setAnimation(run => run +1)
+
+    }
+
     let svgClass = "constellation";
     if (pickingStart) svgClass += " picking-start";
     if (dragging) svgClass += " dragging";
+    if (result) svgClass += result;
+
+    useEffect(() => {onCheckReady(()=>check);
+    },[onCheckReady,chosenEdges])
 
     return(
         <div ref={containerRef} className="constellation-viewport">
             <svg
                 ref={svgRef}
+                className={svgClass}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
-                className={svgClass}
                 width={width}
                 height={height}
                 viewBox={`0 0 ${width} ${height}`}
@@ -445,5 +493,6 @@ export default function ConstellationBox({stars}){
                 <button onClick={resetView} aria-label="Reset view">⟲</button>
             </div>
         </div>
+
     )
 }
