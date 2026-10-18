@@ -492,6 +492,7 @@ export default function ConstellationBox({onCheckReady, stars}){
                 <button onClick={() => zoomButton(1 / 1.5)} aria-label="Zoom out">−</button>
                 <button onClick={resetView} aria-label="Reset view">⟲</button>
             </div>
+            <button onClick={resetConstellation} className='reset-button'>Reset</button>
         </div>
 
     )
