@@ -93,6 +93,10 @@ a{
   color:white;
 }
 
+a:hover {
+  color: #8d8d8d;
+}
+
 button {
   border-radius: 5px;
   position: relative;
