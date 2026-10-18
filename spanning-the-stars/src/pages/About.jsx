@@ -7,6 +7,8 @@ export default function About() {
       <br></br>
       <h2>Resources</h2>
       <p>Gethin Norman's 'Algorithmics I' Lecture Slides ❤</p>
+      <p><a href="">Stellarium</a> star maps were used to map the constellation star maps</p>
+      <p><a href="https://rhodesmill.org/skyfield/">Skyfield</a> was used to retrieve and manipulate <a href="https://www.cosmos.esa.int/web/Hipparcos">Hipparcos data</a></p>
     </div>
   );
 }
