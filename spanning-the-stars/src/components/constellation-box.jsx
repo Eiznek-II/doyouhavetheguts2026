@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useEffect} from "react";
 import "../assets/styles/constellation-box.css";
 
 const stars = {
@@ -6,7 +7,11 @@ const stars = {
     edges : [[0,2,12],[2,4,4], [4,1,3],[1,3,400],[3,0,1]]
 }
 
-export default function ConstellationBox(){
+const solution =[4,0,1,2]
+
+
+
+export default function ConstellationBox({onCheckReady}){
 
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);
@@ -14,8 +19,15 @@ export default function ConstellationBox(){
     // the edges the player has clicked (golden)
     const [chosenEdges, setChosenEdges] = useState([]);
 
+    //animation state
+    const [animation, setAnimation] = useState(0)
+
+    //result state
+    const[result,setResult] = useState(null)
+
     // at the beginning, the player can only pick a starting star
     const pickingStart = startNode === null;
+
 
     //read the constallation relevant to page
 
@@ -136,7 +148,8 @@ export default function ConstellationBox(){
         if (angle > 90) angle -= 180;
         if (angle < -90) angle += 180;
 
-        const edgeIsChosen = chosenEdges.includes(index);
+        const edgeIsChosen = chosenEdges.includes(index)
+        const edgeOrder = chosenEdges.indexOf(index);
         const edgeIsChoosable = canChooseEdge(index);
 
         let edgeClass = "star-edge";
@@ -148,6 +161,11 @@ export default function ConstellationBox(){
                 key={index}
                 className={edgeClass}
                 onClick={() => chooseEdge(index)}
+
+                //depending on order will have more delay, allows for done animations
+                style={{
+                    "--edge-delay": `${edgeOrder*2}s`
+                }}
             >
                 {/* the line you see */}
                 <line className="star-edge__line" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
@@ -186,9 +204,34 @@ export default function ConstellationBox(){
         </g>
     ))
 
+
+
+    function check(){
+        console.log("Checking...");
+        console.log(chosenEdges);
+
+        if (chosenEdges.length=== solution.length &&
+            chosenEdges.every(item => solution.includes(item))){
+                console.log("yay")
+                setResult("true")
+        }
+        else{
+            setResult("false")
+            console.log ("nay")
+        }
+
+        //runs animations
+        setAnimation(run => run +1)
+
+    }
+
     return(
+
         <svg
-            className={pickingStart ? "constellation picking-start" : "constellation"}
+            key={animation}
+            className={`constellation ${
+                pickingStart ? "picking-start" : ""
+            } ${result ? result : ""}`}
             viewBox={`0 0 ${width} ${height}`}
         >
             {edgeElements}

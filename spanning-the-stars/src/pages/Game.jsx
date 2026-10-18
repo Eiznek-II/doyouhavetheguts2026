@@ -22,6 +22,15 @@ export default function Game() {
     setShowCode(!showCode);
   }
 
+
+  const [check, setCheck] = useState(() => () => {});
+  function checkDone() {
+    check()
+      return
+  }
+
+
+
   return (
     <div className="game-layout">
       {/* left panel */}
@@ -35,14 +44,14 @@ export default function Game() {
         <p>Explore the universe...</p>
 
         <div className="game-constellation">
-          <ConstellationBox />
+          <ConstellationBox onCheckReady={setCheck} />
         </div>
 
         <div className="game-buttons">
           <button onClick={handleHint}>
             Hint
           </button>
-          <button>Done</button>
+          <button onClick={checkDone}>Done</button>
         </div>
       </main>
 
