@@ -4,7 +4,6 @@ This is a learning tool to understand the Prim-Jarnik algorithm which finds the 
 # Features
 The features of this project are:
 - Tutorial section explaining the algorithm
-- Tutorial section with a visualisation of the algorithm
 - Home page where you can chose which constellation
 - Interactive game to find the minimum spanning tree
 - Zoom into the constellations
@@ -14,6 +13,7 @@ The features of this project are:
 
 # Technologies Used
 - React
+- node.js
 - Python library SkyField 
 - JavaScript
 - CSS
@@ -30,6 +30,10 @@ The features of this project are:
 # Future Improvements 
 - Make sure the constellation is all a graph
 - Have the difficulties of the constellations 
+- Include more star data! e.g. temperature of star and other cool star information
+- Step by step code tutorial
+- Add more algorithhms - the setup of ours technically means that it can be refactored to use more algorithms e.g. Kruskals
+- Tutorial section with a visualisation of the algorithm
 
 # Acknowledgements 
 This project used the dataset from the Hipparcos Space Astrometry Mission found here: https://www.cosmos.esa.int/web/Hipparcos 
