@@ -10,7 +10,7 @@ export default function Tutorial() {
         <h1>Tutorial</h1>
         <div className='tutorial_info'>
             <div className="character-box">
-            <img src="/alien.png" alt="Guide" className="character" />
+            <img src="/alien-clear.png" alt="Guide" className="character" />
             <Dialogue
                 lines={[
                   {
