@@ -341,11 +341,13 @@ export default function ConstellationBox({onCheckReady, stars}){
         }
     }
 
-    // return function
-    // function resetConstellation() {
-    //     setStartNode(null);
-    //     setChosenEdges([]);
-    // }
+    // start the puzzle again - forget the start star, chosen edges, answer and right/wrong result
+    function resetConstellation() {
+        setStartNode(null);
+        setChosenEdges([]);
+        setSolution([]);
+        setResult(null);
+    }
 
     // click a star to start from it - only works before a start is picked
     function pickStart(nodeIndex) {
