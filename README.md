@@ -29,6 +29,7 @@ The features of this project are:
 
 # Future Improvements 
 - Make sure the constellation is all a graph
+- Have the difficulties of the constellations 
 
 # Acknowledgements 
 This project used the dataset from the Hipparcos Space Astrometry Mission found here: https://www.cosmos.esa.int/web/Hipparcos 

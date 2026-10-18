@@ -5,6 +5,8 @@ import InfoBox from "../components/info-box";
 import ConstellationBox from '../components/constellation-box';
 import "../assets/styles/game.css";
 import { getConstellation, getRandomConstellation } from "../get_constellation";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // testng code lines - replace with diff algorithms
 const lines = [
@@ -16,6 +18,13 @@ const lines = [
 
 
 export default function Game({name=null}) {
+  // for navigation of next
+  const navigate = useNavigate();
+
+  const goToNext = () => {
+    const seed = Math.random(); // new value each click
+    navigate(`/game?seed=${seed}`);
+  };
   // is the code box showing?
   const [showCode, setShowCode] = useState(false);
   let params = useParams();
@@ -67,6 +76,7 @@ export default function Game({name=null}) {
             Hint
           </button>
           <button onClick={checkDone}>Done</button>
+          <button onClick={goToNext}>Next</button>
         </div>
       </main>
 

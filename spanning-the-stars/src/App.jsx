@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom'
+
 import Home from './pages/Home'
 import Tutorial from './pages/Tutorial'
 import Game from './pages/Game'
@@ -12,7 +12,11 @@ import Navbar from './components/nav-bar'
 
 import { useState, useEffect } from "react";
 
+import { useLocation, Routes, Route, Link } from "react-router-dom";
+  
+
 function App() {
+  const location = useLocation();
   useEffect(() => {
       console.log("creating stars")
       const stars = createStars();
@@ -25,7 +29,7 @@ function App() {
 
     <>
       <Navbar />
-      <Routes>
+      <Routes location={location} key={location.search}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/tutorial" element={<Tutorial />} />
