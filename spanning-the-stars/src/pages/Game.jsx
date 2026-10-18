@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
 import CodeBox from "../components/code-box";
 import InfoBox from "../components/info-box";
 import ConstellationBox from '../components/constellation-box';
@@ -17,11 +18,21 @@ const lines = [
 export default function Game({name=null}) {
   // is the code box showing?
   const [showCode, setShowCode] = useState(false);
+  let params = useParams();
+  console.log(params.starName);
+  console.log(params.starName == null);
+  let starArr;
 
-
+  if (params.starName == null){
   // pick the constellation once - useState stops a new random one being picked on every re-render
-  const [starData] = useState(() => (name) ? { name, ...getConstellation(name) } : getRandomConstellation())
-
+  starArr = useState(() => (name) ? { name, ...getConstellation(name) } : getRandomConstellation())
+  //console.log([starData]);
+  }
+  else {
+    starArr = [{name:params.starName,points:getConstellation(params.starName).points, edges:getConstellation(params.starName).edges}]
+  }
+  const [starData] = starArr
+  console.log(starData)
   // runs when the Hint button is clicked - shows/hides the code box
   function handleHint() {
     setShowCode(!showCode);
