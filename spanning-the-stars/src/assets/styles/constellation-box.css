@@ -116,6 +116,7 @@
     flex-wrap: wrap;
     margin-left:auto;
     margin-right:auto;
+    justify-content:space-evenly;
      /* CONSTANTS */
     --star-white: #ffffff;
     --soft-glow: rgba(255, 255, 255, 0.45);
