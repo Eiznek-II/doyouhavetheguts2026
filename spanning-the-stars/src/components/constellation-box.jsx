@@ -328,6 +328,12 @@ export default function ConstellationBox({stars}){
         }
     }
 
+    // return function
+    function resetConstellation() {
+        setStartNode(null);
+        setChosenEdges([]);
+    }
+
     // click a star to start from it - only works before a start is picked
     function pickStart(nodeIndex) {
         if (wasDragRef.current) return; // that was a drag, not a click
@@ -444,6 +450,7 @@ export default function ConstellationBox({stars}){
                 <button onClick={() => zoomButton(1 / 1.5)} aria-label="Zoom out">−</button>
                 <button onClick={resetView} aria-label="Reset view">⟲</button>
             </div>
+            <button onClick={resetConstellation} className='reset-button'>Reset</button>
         </div>
     )
 }
