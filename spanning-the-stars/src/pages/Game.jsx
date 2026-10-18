@@ -38,6 +38,16 @@ export default function Game({name=null}) {
     setShowCode(!showCode);
   }
 
+
+  const [check, setCheck] = useState(() => () => {});
+  function checkDone() {
+    console.log("what")
+    check();
+      return
+  }
+
+
+
   return (
     <div className="game-layout">
       {/* left panel */}
@@ -52,13 +62,14 @@ export default function Game({name=null}) {
 
         <div className="game-constellation">
           <ConstellationBox stars={starData}/>
+          <ConstellationBox onCheckReady={setCheck} />
         </div>
 
         <div className="game-buttons">
           <button onClick={handleHint}>
             Hint
           </button>
-          <button>Done</button>
+          <button onClick={checkDone}>Done</button>
         </div>
       </main>
 
