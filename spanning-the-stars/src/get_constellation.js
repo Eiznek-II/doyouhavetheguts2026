@@ -1,4 +1,4 @@
-import jsonData from './assets/constellations.json' assert { type: 'json' };
+import jsonData from './assets/constellations.json' with { type: 'json' };
 
 export function getConstellation(starName){
   if (starName == "tutorial1"){
@@ -10,4 +10,12 @@ export function getConstellation(starName){
   else{
     return jsonData[starName]
   }
+}
+
+export function getAllConstellationNames(){
+  let names = []
+  console.log(jsonData)
+  Object.keys(jsonData).forEach(element => { names.push(element)});
+  console.log(names)
+  return names
 }

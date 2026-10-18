@@ -49,7 +49,7 @@ for i in constellations["constellations"]:
         star_y_pos = [(y - min(star_y_pos)) for y in star_y_pos]
         star_y_pos = [(y / max(star_y_pos)) for y in star_y_pos]
 
-    if len(stars) <=20 and len(stars) > 5:
+    if len(stars) <=20 and len(stars) > 5 and not i['common_name']['native'] == "Ursa Major":
         actual_constellations[i['common_name']['native']] = {"points": [[star_x_pos[i],star_y_pos[i] ] for i in range(len(star_x_pos))], "edges":edges}
 
 print(actual_constellations)
