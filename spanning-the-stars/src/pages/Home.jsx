@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div className="home-page">
       <div className='container'>
-        <h1>Home</h1>
+        <h1>Spanning the Stars</h1>
         <button onClick={openConstellation}
                 className = "collapsible">Constellation </button>
         {isOpen && (   
