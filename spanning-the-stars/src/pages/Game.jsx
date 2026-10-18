@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CodeBox from "../components/code-box";
 import InfoBox from "../components/info-box";
 import ConstellationBox from '../components/constellation-box';
@@ -50,8 +50,7 @@ export default function Game({name=null}) {
         <p>Explore the universe...</p>
 
         <div className="game-constellation">
-          <ConstellationBox stars={starData}/>
-          <ConstellationBox onCheckReady={setCheck} />
+          <ConstellationBox stars={starData} onCheckReady={setCheck} />
         </div>
 
         <div className="game-buttons">

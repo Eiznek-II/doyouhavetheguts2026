@@ -63,7 +63,7 @@ export default function ConstellationBox({onCheckReady, stars}){
     const [chosenEdges, setChosenEdges] = useState([]);
 
     //animation state
-    const [animation, setAnimation] = useState(0)
+    // const [animation, setAnimation] = useState(0)
 
     //result state
     const[result,setResult] = useState(null)
@@ -435,35 +435,6 @@ export default function ConstellationBox({onCheckReady, stars}){
         </g>
     ))
 
-    let svgClass = "constellation";
-    if (pickingStart) svgClass += " picking-start";
-    if (dragging) svgClass += " dragging";
-
-    return(
-        <div ref={containerRef} className="constellation-viewport">
-            <svg
-                ref={svgRef}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerCancel={handlePointerUp}
-                className={svgClass}
-                width={width}
-                height={height}
-                viewBox={`0 0 ${width} ${height}`}
-            >
-                {edgeElements}
-                {nodeElements}
-            </svg>
-
-            <div className="constellation-controls">
-                <button onClick={() => zoomButton(1.5)} aria-label="Zoom in">+</button>
-                <button onClick={() => zoomButton(1 / 1.5)} aria-label="Zoom out">−</button>
-                <button onClick={resetView} aria-label="Reset view">⟲</button>
-            </div>
-        </div>
-
-    )
 
 
     function check(){
@@ -481,25 +452,41 @@ export default function ConstellationBox({onCheckReady, stars}){
         }
 
         //runs animations
-        setAnimation(run => run +1)
+        // setAnimation(run => run +1)
 
     }
+
+    let svgClass = "constellation";
+    if (pickingStart) svgClass += " picking-start";
+    if (dragging) svgClass += " dragging";
+    if (result) svgClass += result;
 
     useEffect(() => {onCheckReady(()=>check);
     },[onCheckReady,chosenEdges])
 
-
     return(
+        <div ref={containerRef} className="constellation-viewport">
+            <svg
+                ref={svgRef}
+                className={svgClass}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                width={width}
+                height={height}
+                viewBox={`0 0 ${width} ${height}`}
+            >
+                {edgeElements}
+                {nodeElements}
+            </svg>
 
-        <svg
-            key={animation}
-            className={`constellation ${
-                pickingStart ? "picking-start" : ""
-            } ${result ? result : ""}`}
-            viewBox={`0 0 ${width} ${height}`}
-        >
-            {edgeElements}
-            {nodeElements}
-        </svg>
+            <div className="constellation-controls">
+                <button onClick={() => zoomButton(1.5)} aria-label="Zoom in">+</button>
+                <button onClick={() => zoomButton(1 / 1.5)} aria-label="Zoom out">−</button>
+                <button onClick={resetView} aria-label="Reset view">⟲</button>
+            </div>
+        </div>
+
     )
 }
