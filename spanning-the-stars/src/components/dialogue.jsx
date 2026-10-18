@@ -13,15 +13,17 @@ export default function Dialogue({ lines }) {
   return (
     <div>
         {lines.slice(0, index + 1).map((line, i) => (
-            <div key={i}>
+          <div key={i}>
             {typeof line === "string" ? (
-                <TalkingText text={line} />
+              <TalkingText text={line} />
+            ) : line.type === "h2" ? (
+              <h2><TalkingText text={line.text} /></h2>
             ) : (
-                line
+              <p><TalkingText text={line.text} /></p>
             )}
-            </div>
-
+          </div>
         ))}
+
 
 
       {index < lines.length - 1 && (
