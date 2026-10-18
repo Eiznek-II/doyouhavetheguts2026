@@ -1,4 +1,6 @@
 .navbar {
+    position: relative;
+    z-index: 1; /* stays on top of a zoomed-in constellation */
     width: 100%;
     box-sizing: border-box;
     padding: 15px 30px;

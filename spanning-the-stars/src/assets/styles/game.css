@@ -54,6 +54,13 @@ h2 {
     align-items: center;
 }
 
+/* everything except the constellation sits on top of it, so a zoomed-in constellation is in the background */
+.game-left-panel,
+.game-main > :not(.game-constellation) {
+    position: relative;
+    z-index: 1;
+}
+
 .game-main h1 {
     font-size: clamp(32px, 4vw, 56px);
     line-height: 1.1;

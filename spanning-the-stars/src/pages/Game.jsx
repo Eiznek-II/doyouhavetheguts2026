@@ -13,6 +13,7 @@ const lines = [
   'and have the minimum possible weight'
 ];
 
+
 export default function Game({name=null}) {
   useEffect(() => {
     console.log("creating stars")
@@ -22,6 +23,7 @@ export default function Game({name=null}) {
   }, []);
   // is the code box showing?
   const [showCode, setShowCode] = useState(false);
+
 
   // pick the constellation once - useState stops a new random one being picked on every re-render
   const [starData] = useState(() => (name) ? { name, ...getConstellation(name) } : getRandomConstellation())

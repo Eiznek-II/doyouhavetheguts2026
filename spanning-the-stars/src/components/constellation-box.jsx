@@ -1,6 +1,55 @@
 import { useState, useRef, useEffect } from "react";
 import "../assets/styles/constellation-box.css";
 
+const padding = 30; // room for the glow around the outer stars
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 100;
+const DRAG_THRESHOLD = 5; // pixels the pointer has to move before it counts as a drag, not a click
+const EASING = 0.2; // how much of the way to the target the camera moves each frame (higher = snappier)
+
+const KEY_PAN_SPEED = 10; // pixels the view moves each frame while a WASD key is held
+
+// which way each key moves the constellation on screen
+const PAN_KEYS = {
+    w: { x: 0, y: 1 },  // look up    -> stars move down
+    a: { x: 1, y: 0 },  // look left  -> stars move right
+    s: { x: 0, y: -1 }, // look down  -> stars move up
+    d: { x: -1, y: 0 }, // look right -> stars move left
+};
+
+// keep the zoom in range (panning is unlimited - the reset button brings it back)
+function clampView({ zoom, x, y }) {
+    return { zoom: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom)), x, y };
+}
+
+// glide the camera to a new position
+// camera = { viewRef, targetRef, frameRef, setView } - it lives out here (not inside the component)
+// so the keyboard code below can use it from inside a useEffect
+function glideCamera(camera, target) {
+    const { viewRef, targetRef, frameRef, setView } = camera;
+    targetRef.current = clampView(target);
+    if (frameRef.current) return; // already animating - it'll pick up the new target
+
+    function step() {
+        const v = viewRef.current;
+        const t = targetRef.current;
+        const next = {
+            zoom: v.zoom + (t.zoom - v.zoom) * EASING,
+            x: v.x + (t.x - v.x) * EASING,
+            y: v.y + (t.y - v.y) * EASING,
+        };
+        const done =
+            Math.abs(t.zoom - next.zoom) < 0.001 &&
+            Math.abs(t.x - next.x) < 0.5 &&
+            Math.abs(t.y - next.y) < 0.5;
+
+        viewRef.current = done ? t : next;
+        setView(viewRef.current);
+        frameRef.current = done ? null : requestAnimationFrame(step);
+    }
+    frameRef.current = requestAnimationFrame(step);
+}
+
 export default function ConstellationBox({stars}){
 
     // the star the player starts from (null = not picked yet)
@@ -31,26 +80,199 @@ export default function ConstellationBox({stars}){
 
     //get size of box - measured from the page, so the graph fills all the space it has
     const containerRef = useRef(null);
+    const sizeRef = useRef({ width: 400, height: 400 });
     const [size, setSize] = useState({ width: 400, height: 400 });
 
     useEffect(() => {
         const observer = new ResizeObserver(([entry]) => {
             const boxWidth = entry.contentRect.width;
             // as wide as the space allows, but never taller than 75% of the screen
-            setSize({ width: boxWidth, height: Math.min(boxWidth, window.innerHeight * 0.75) });
+            const newSize = { width: boxWidth, height: Math.min(boxWidth, window.innerHeight * 0.75) };
+            sizeRef.current = newSize;
+            setSize(newSize);
         });
         observer.observe(containerRef.current);
         return () => observer.disconnect();
     }, []);
 
     const { width, height } = size;
-    const padding = 30; // room for the glow around the outer stars
+
+    // ---------- camera (zoom + pan) ----------
+    // view   = what's drawn right now
+    // target = where the camera is heading - every frame, view moves a bit closer to target,
+    //          which is what makes zooming and panning glide instead of jump
+    const svgRef = useRef(null);
+    const [view, setView] = useState({ zoom: 1, x: 0, y: 0 });
+    const viewRef = useRef({ zoom: 1, x: 0, y: 0 });
+    const targetRef = useRef({ zoom: 1, x: 0, y: 0 });
+    const frameRef = useRef(null);
+
+    const dragRef = useRef(null);      // info about the drag in progress (null = not dragging)
+    const wasDragRef = useRef(false);  // true if the last press was a drag, so it shouldn't count as a click
+    const [dragging, setDragging] = useState(false);
+
+    // glide the camera to a new position
+    function animateTo(target) {
+        glideCamera({ viewRef, targetRef, frameRef, setView }, target);
+    }
+
+    // WASD to pan - holding a key keeps moving, and it glides to a stop when you let go
+    useEffect(() => {
+        const camera = { viewRef, targetRef, frameRef, setView };
+        const keysHeld = new Set();
+        let keyFrame = null;
+
+        function moveWhileHeld() {
+            if (keysHeld.size === 0) {
+                keyFrame = null;
+                return;
+            }
+            let dx = 0;
+            let dy = 0;
+            keysHeld.forEach((key) => {
+                dx += PAN_KEYS[key].x;
+                dy += PAN_KEYS[key].y;
+            });
+            const t = targetRef.current;
+            glideCamera(camera, { ...t, x: t.x + dx * KEY_PAN_SPEED, y: t.y + dy * KEY_PAN_SPEED });
+            keyFrame = requestAnimationFrame(moveWhileHeld);
+        }
+
+        function handleKeyDown(e) {
+            // don't pan while typing in a box, or for shortcuts like ctrl+s / cmd+a
+            const tag = e.target.tagName;
+            if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.target.isContentEditable) return;
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+            const key = e.key.toLowerCase();
+            if (!PAN_KEYS[key]) return;
+            e.preventDefault();
+            keysHeld.add(key);
+            if (!keyFrame) keyFrame = requestAnimationFrame(moveWhileHeld);
+        }
+
+        function handleKeyUp(e) {
+            keysHeld.delete(e.key.toLowerCase());
+        }
+
+        // if the window loses focus while a key is held, the key-up never arrives - so let go of everything
+        function handleBlur() {
+            keysHeld.clear();
+        }
+
+        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+        window.addEventListener("blur", handleBlur);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keyup", handleKeyUp);
+            window.removeEventListener("blur", handleBlur);
+            cancelAnimationFrame(keyFrame);
+        };
+    }, []);
+
+    // stop any animation when leaving the page
+    useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
+
+    // zoom by a factor, keeping the point (mouseX, mouseY) in the same place on screen
+    function zoomAt(factor, mouseX, mouseY) {
+        const t = targetRef.current;
+        const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, t.zoom * factor));
+        const ux = mouseX - padding;
+        const uy = mouseY - padding;
+        animateTo({
+            zoom: newZoom,
+            x: ux - (ux - t.x) * (newZoom / t.zoom),
+            y: uy - (uy - t.y) * (newZoom / t.zoom),
+        });
+    }
+
+    function zoomButton(factor) {
+        zoomAt(factor, width / 2, height / 2);
+    }
+
+    function resetView() {
+        animateTo({ zoom: 1, x: 0, y: 0 });
+    }
+
+    // mouse wheel / trackpad zoom
+    // added by hand (not onWheel) because React's onWheel can't stop the page scrolling at the same time
+    useEffect(() => {
+        const svg = svgRef.current;
+        function handleWheel(e) {
+            e.preventDefault();
+            const rect = svg.getBoundingClientRect();
+            zoomAt(Math.exp(-e.deltaY * 0.002), e.clientX - rect.left, e.clientY - rect.top);
+        }
+        svg.addEventListener("wheel", handleWheel, { passive: false });
+        return () => svg.removeEventListener("wheel", handleWheel);
+    });
+
+    // ---------- dragging to pan ----------
+    function handlePointerDown(e) {
+        if (e.button !== 0) return; // left mouse button / finger only
+        dragRef.current = {
+            startX: e.clientX,
+            startY: e.clientY,
+            panX: targetRef.current.x,
+            panY: targetRef.current.y,
+            moved: false,
+            lastX: e.clientX,
+            lastY: e.clientY,
+            lastTime: e.timeStamp,
+            speedX: 0,
+            speedY: 0,
+        };
+        wasDragRef.current = false;
+    }
+
+    function handlePointerMove(e) {
+        const drag = dragRef.current;
+        if (!drag) return;
+
+        const dx = e.clientX - drag.startX;
+        const dy = e.clientY - drag.startY;
+
+        // don't start dragging until the pointer has moved a bit - otherwise every click is a tiny drag
+        if (!drag.moved) {
+            if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+            drag.moved = true;
+            wasDragRef.current = true;
+            e.currentTarget.setPointerCapture(e.pointerId); // keep dragging even if the pointer leaves the box
+            setDragging(true);
+        }
+
+        // remember how fast it's moving, for the glide when you let go
+        const dt = Math.max(1, e.timeStamp - drag.lastTime);
+        drag.speedX = (e.clientX - drag.lastX) / dt;
+        drag.speedY = (e.clientY - drag.lastY) / dt;
+        drag.lastX = e.clientX;
+        drag.lastY = e.clientY;
+        drag.lastTime = e.timeStamp;
+
+        // while dragging, the view follows the pointer exactly (no lag)
+        const next = clampView({ zoom: targetRef.current.zoom, x: drag.panX + dx, y: drag.panY + dy });
+        targetRef.current = next;
+        viewRef.current = { ...viewRef.current, x: next.x, y: next.y };
+        setView(viewRef.current);
+    }
+
+    function handlePointerUp() {
+        const drag = dragRef.current;
+        dragRef.current = null;
+        if (!drag || !drag.moved) return;
+
+        setDragging(false);
+        // keep gliding a little in the direction it was thrown
+        const t = targetRef.current;
+        animateTo({ zoom: t.zoom, x: t.x + drag.speedX * 150, y: t.y + drag.speedY * 150 });
+    }
 
     //scale nodes to position in box
     const nodes = stars.points.map(([x,y],id)=> ({
         id,
-        x: padding + x * (width-padding*2),
-        y: padding + y * (height-padding*2),
+        x: padding + x * (width-padding*2) * view.zoom + view.x,
+        y: padding + y * (height-padding*2) * view.zoom + view.y,
     }))
 
     // click an edge to choose it, click again to unchoose it
@@ -100,6 +322,7 @@ export default function ConstellationBox({stars}){
     }
 
     function chooseEdge(index){
+        if (wasDragRef.current) return; // that was a drag, not a click
         if (canChooseEdge(index)) {
             toggleEdge(index);
         }
@@ -107,6 +330,7 @@ export default function ConstellationBox({stars}){
 
     // click a star to start from it - only works before a start is picked
     function pickStart(nodeIndex) {
+        if (wasDragRef.current) return; // that was a drag, not a click
         if (pickingStart) {
             setStartNode(nodeIndex);
         }
@@ -122,6 +346,7 @@ export default function ConstellationBox({stars}){
             return start === nodeIndex || end === nodeIndex;
         });
     }
+
 
     //create edges and draw them
     const edgeElements = stars.edges.map(([start,end,weight], index)=>
@@ -193,10 +418,19 @@ export default function ConstellationBox({stars}){
         </g>
     ))
 
+    let svgClass = "constellation";
+    if (pickingStart) svgClass += " picking-start";
+    if (dragging) svgClass += " dragging";
+
     return(
-        <div ref={containerRef}>
+        <div ref={containerRef} className="constellation-viewport">
             <svg
-                className={pickingStart ? "constellation picking-start" : "constellation"}
+                ref={svgRef}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                className={svgClass}
                 width={width}
                 height={height}
                 viewBox={`0 0 ${width} ${height}`}
@@ -204,6 +438,12 @@ export default function ConstellationBox({stars}){
                 {edgeElements}
                 {nodeElements}
             </svg>
+
+            <div className="constellation-controls">
+                <button onClick={() => zoomButton(1.5)} aria-label="Zoom in">+</button>
+                <button onClick={() => zoomButton(1 / 1.5)} aria-label="Zoom out">−</button>
+                <button onClick={resetView} aria-label="Reset view">⟲</button>
+            </div>
         </div>
     )
 }

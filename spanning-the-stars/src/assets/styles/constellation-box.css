@@ -6,8 +6,64 @@
     --gold: #ffd166;
     --gold-glow: rgba(255, 196, 61, 1);
 
-    width: 100%;
-    overflow: visible;
+    display: block;
+    overflow: visible; /* zoomed in, the constellation spreads out behind the rest of the page */
+    cursor: grab;
+    touch-action: none; /* stop phones scrolling the page while dragging the graph */
+    user-select: none;
+}
+
+.constellation.dragging,
+.constellation.dragging * {
+    cursor: grabbing;
+}
+
+.constellation-viewport {
+    position: relative;
+    z-index: 0; /* sits underneath everything else on the page (see game.css + navbar.css) */
+}
+
+/* zoom buttons in the top right corner of the graph */
+.constellation-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.constellation-viewport:hover .constellation-controls {
+    opacity: 1;
+}
+
+.constellation-controls button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #33445f;
+    background: rgba(21, 31, 51, 0.85);
+    color: var(--star-white, #fff);
+    font-size: 18px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+/* turn off the global button image + press-down effect */
+.constellation-controls button::before {
+    content: none;
+}
+
+.constellation-controls button:hover {
+    background: #22314c;
+    box-shadow: none;
+    transform: scale(1.08);
+}
+
+.constellation-controls button:active {
+    transform: scale(0.95);
 }
 
 .star-edge.choosable {
