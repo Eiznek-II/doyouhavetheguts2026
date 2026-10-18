@@ -19,17 +19,6 @@ const lineStyle = {
   whiteSpace: 'pre', // keep spaces exactly as written
 }
 
-// the green bar that slides behind the highlighted line
-const highlightBarStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  height: `${LINE_HEIGHT}px`,
-  background: 'rgba(46, 204, 113, 0.2)',
-  borderLeft: '3px solid #2ecc71',
-  transition: 'transform 0.25s ease-out', // the slide animation
-}
 
 // lines:         the text to show, one string per line
 // highlightLine: which line is green (0 = first line)
@@ -41,7 +30,6 @@ export default function CodeBox({ lines, highlightLine, isOpen }) {
         {/* move the bar down one line height per line */}
         <div
           style={{
-            ...highlightBarStyle,
             transform: `translateY(${highlightLine * LINE_HEIGHT}px)`,
           }}
         />
