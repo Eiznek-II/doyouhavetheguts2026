@@ -13,7 +13,12 @@ const sections = [
         {
           title: "What is the Prim-Jarnik Algorithm for MST?",
           content: "Prim-Jarnik algorithm is a Greedy algorithm, meaning it makes the locally optimal choice at each step with the hope of finding a global optimum solution. In the Prim-Jarnik Algorithm, we start with a single node and move through several adjacent nodes, in order to explore all of the connected edges."
+        },
+        {
+          title: "Instructions",
+          content: "1: Pick the node (star) you want to start. \n2: Use the Prim-Jarnik Algorithm to find the minimum spanning tree. \n3: When you are finished press Done to see if you are correct. \nReminder if you are stuck press Hint."
         }
+
 ];
 
 export default function InfoBox() {

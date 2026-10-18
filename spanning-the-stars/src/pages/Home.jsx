@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "../assets/styles/home.css"
+import ConstellationLinkBox from "../components/constellation-link-box";
+
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(true)
@@ -23,6 +25,10 @@ export default function Home() {
               <p>But never fear! You can find the cheapest way to build the highway by finding the minimum spanning tree of the constellation, and we're going to show you how to do this using the Prim-Jarnik Algorithm!</p>
             </div>
           </div>
+        )}
+
+        {!isOpen && (
+          <ConstellationLinkBox></ConstellationLinkBox>
         )}
       </div>
   </div>

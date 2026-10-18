@@ -166,3 +166,29 @@
 .picking-start .star-edge {
     pointer-events: none;
 }
+
+.constellation-link-flex{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left:auto;
+    margin-right:auto;
+    justify-content:space-evenly;
+     /* CONSTANTS */
+    --star-white: #ffffff;
+    --soft-glow: rgba(255, 255, 255, 0.45);
+    --bright-glow: rgba(255, 255, 255, 0.95);
+    --gold: #ffd166;
+    --gold-glow: rgba(255, 196, 61, 1);
+}
+
+.constellation-link{
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.constellation-link svg{
+    margin-left:auto;
+    margin-right:auto;
+    padding:20px;
+}

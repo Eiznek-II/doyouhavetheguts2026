@@ -6,6 +6,8 @@ import json
 import math
 import numpy as np
 
+exclude = {"Ursa Major", "Serpens", "Sagittarius"}
+
 def magnitude(vector): 
     return math.sqrt(sum(pow(element, 2) for element in vector))
 
@@ -41,7 +43,7 @@ for i in constellations["constellations"]:
             x,y,z = star_data.frame_xyz(skyfield.framelib.itrs).m
             
             if ii >0:
-                edges.append([previous_star,stars[star],ly_conv*magnitude([x-prev_x,y-prev_y,z-prev_z]) ])
+                edges.append([previous_star,stars[star],min(ly_conv*magnitude([x-prev_x,y-prev_y,z-prev_z]),1) ])
             previous_star = stars[star]
             prev_x, prev_y, prev_z =x,y,z
         star_x_pos = [(x - min(star_x_pos)) for x in star_x_pos]
@@ -49,11 +51,10 @@ for i in constellations["constellations"]:
         star_y_pos = [(y - min(star_y_pos)) for y in star_y_pos]
         star_y_pos = [(y / max(star_y_pos)) for y in star_y_pos]
 
-    if len(stars) <=20 and len(stars) > 5:
+    if len(stars) <=20 and len(stars) > 5 and not i['common_name']['native'] in exclude:
         actual_constellations[i['common_name']['native']] = {"points": [[star_x_pos[i],star_y_pos[i] ] for i in range(len(star_x_pos))], "edges":edges}
 
-print(actual_constellations)
-print(len(actual_constellations['Andromeda']['points']))
+
 actual_constellations_string = json.dumps(actual_constellations)
 with open("constellations.json", "w", encoding="utf-8") as f:
     f.write(actual_constellations_string)
