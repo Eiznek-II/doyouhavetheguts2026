@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import {useEffect} from "react";
 import "../assets/styles/constellation-box.css";
 
 const padding = 30; // room for the glow around the outer stars
@@ -51,6 +53,11 @@ function glideCamera(camera, target) {
 }
 
 export default function ConstellationBox({stars}){
+const solution =[4,0,1,2]
+
+
+
+export default function ConstellationBox({onCheckReady}){
 
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);
@@ -58,8 +65,15 @@ export default function ConstellationBox({stars}){
     // the edges the player has clicked (golden)
     const [chosenEdges, setChosenEdges] = useState([]);
 
+    //animation state
+    const [animation, setAnimation] = useState(0)
+
+    //result state
+    const[result,setResult] = useState(null)
+
     // at the beginning, the player can only pick a starting star
     const pickingStart = startNode === null;
+
 
     //read the constallation relevant to page
 
@@ -368,7 +382,8 @@ export default function ConstellationBox({stars}){
         if (angle > 90) angle -= 180;
         if (angle < -90) angle += 180;
 
-        const edgeIsChosen = chosenEdges.includes(index);
+        const edgeIsChosen = chosenEdges.includes(index)
+        const edgeOrder = chosenEdges.indexOf(index);
         const edgeIsChoosable = canChooseEdge(index);
 
         let edgeClass = "star-edge";
@@ -380,6 +395,11 @@ export default function ConstellationBox({stars}){
                 key={index}
                 className={edgeClass}
                 onClick={() => chooseEdge(index)}
+
+                //depending on order will have more delay, allows for done animations
+                style={{
+                    "--edge-delay": `${edgeOrder*2}s`
+                }}
             >
                 {/* the line you see */}
                 <line className="star-edge__line" x1={a.x} y1={a.y} x2={labelX - gapX} y2={labelY - gapY} />
@@ -445,5 +465,42 @@ export default function ConstellationBox({stars}){
                 <button onClick={resetView} aria-label="Reset view">⟲</button>
             </div>
         </div>
+
+
+    function check(){
+        console.log("Checking...");
+        console.log(chosenEdges);
+
+        if (chosenEdges.length=== solution.length &&
+            chosenEdges.every(item => solution.includes(item))){
+                console.log("yay")
+                setResult("true")
+        }
+        else{
+            setResult("false")
+            console.log ("nay")
+        }
+
+        //runs animations
+        setAnimation(run => run +1)
+
+    }
+
+    useEffect(() => {onCheckReady(()=>check);
+    },[onCheckReady,chosenEdges])
+
+
+    return(
+
+        <svg
+            key={animation}
+            className={`constellation ${
+                pickingStart ? "picking-start" : ""
+            } ${result ? result : ""}`}
+            viewBox={`0 0 ${width} ${height}`}
+        >
+            {edgeElements}
+            {nodeElements}
+        </svg>
     )
 }
