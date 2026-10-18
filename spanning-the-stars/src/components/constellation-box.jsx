@@ -392,7 +392,7 @@ export default function ConstellationBox({onCheckReady, stars}){
         if (angle < -90) angle += 180;
 
         const edgeIsChosen = chosenEdges.includes(index)
-        const edgeOrder = chosenEdges.indexOf(index);
+        const edgeOrder = solution.indexOf(index);
         const edgeIsChoosable = canChooseEdge(index);
 
         let edgeClass = "star-edge";
