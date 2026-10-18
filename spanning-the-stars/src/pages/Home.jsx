@@ -15,7 +15,7 @@ export default function Home() {
       <div className='container'>
         <h1>Spanning the Stars</h1>
         <button onClick={openConstellation}
-                className = "collapsible">Constellation </button>
+                className = "collapsible">Constellations </button>
         {isOpen && (   
           <div className = "text-box">
             <div className = "text">
