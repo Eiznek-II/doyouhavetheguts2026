@@ -6,11 +6,14 @@ export function prims_alg(edges, numPoints, firstPoint){
     minSpanningTree.add(firstPoint);
     let currentEdges = new Set();
     currentEdges = get_valid_edges(firstPoint, currentEdges, minSpanningTree);
+
     while (minSpanningTree.size < numPoints){
         let newEdge = get_min_edge(edge_set);
+
         minSpanningTreeEdges.push(newEdge);
         if(minSpanningTree.has(newEdge[0])){
             minSpanningTree.add(newEdge[1]);
+            //call animate new edge
             currentEdges = get_valid_edges(newEdge[1], currentEdges, minSpanningTree);
         }
         else{

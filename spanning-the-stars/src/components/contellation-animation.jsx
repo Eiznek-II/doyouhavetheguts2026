@@ -2,11 +2,11 @@ import { useState } from "react";
 import "../assets/styles/constellation-box.css";
 
 const stars = {
-    points : [ [0.5, 0], [0.975,0.345],[0.794,0.904],[0.206,0.904],[0.02,0.345]],
-    edges : [[0,2,12],[2,4,4], [4,1,3],[1,3,400],[3,0,1]]
+    points : [ [2/14, 6/14], [4/14,8/14],[6/14,8/14],[8/14,10/14],[8/14,6/14],[14/14,9/14],[12/14,6/14]],
+    edges : [[0,1,2],[1,2,2], [2,3,3],[2,4,8],[3,5,1],[5,6,5],[6,4,4]]
 }
 
-export default function ConstellationBox(){
+export default function ConstellationAnime(){
 
     // the star the player starts from (null = not picked yet)
     const [startNode, setStartNode] = useState(null);
@@ -16,23 +16,6 @@ export default function ConstellationBox(){
 
     // at the beginning, the player can only pick a starting star
     const pickingStart = startNode === null;
-
-    //read the constallation relevant to page
-
-    //edges can be inactive or active
-
-    //add and remove active edges and apply correct styling
-
-    // have weight viable, and have hover effect
-
-    //we need an alien friend
-
-    //we need the teaching alien
-
-
-    //start up animation showing the original
-
-    //animate teaching alien along with psudocode
 
     //get size of box - might need to change this if we want website to be reactive, might need to update page
     const width = 400;
@@ -185,6 +168,8 @@ export default function ConstellationBox(){
             <circle className="star-node__hit-area" cx={node.x} cy={node.y} r={14} />
         </g>
     ))
+
+
 
     return(
         <svg

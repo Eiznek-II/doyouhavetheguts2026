@@ -6,6 +6,9 @@
     --gold: #ffd166;
     --gold-glow: rgba(255, 196, 61, 1);
 
+    --purple: #6531ff;
+    --purple-glow: rgb(112, 65, 255,1);
+
     width: 100%;
     overflow: visible;
 }
@@ -37,6 +40,13 @@
     stroke: var(--gold);
     stroke-width: 3;
     filter: drop-shadow(0 0 6px var(--gold-glow)) drop-shadow(0 0 16px var(--gold-glow));
+}
+
+/* CONSIDERING */
+.star-edge.considering .star-edge__line {
+    stroke: var(--purple);
+    stroke-width: 3;
+    filter: drop-shadow(0 0 6px var(--purple-glow)) drop-shadow(0 0 16px var(--purple-glow));
 }
 
 .star-edge__label {
