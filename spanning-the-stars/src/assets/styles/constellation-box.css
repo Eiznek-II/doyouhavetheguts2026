@@ -193,7 +193,7 @@
     margin-left:auto;
     margin-right:auto;
     padding:20px;
-
+}
 /* for the animation stuff */
 
 .constellation.true .star-edge__line {
@@ -204,7 +204,7 @@
     animation-delay: var(--edge-delay,0s);
 }
 
-.constellation.true star
+/* .constellation.true star */
 
 /*.constellation.false .star-edge__line {*/
 /*    stroke: red;*/
