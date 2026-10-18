@@ -73,7 +73,7 @@ export default function Tutorial() {
             />
             </div>
         </div>
-        <Link to ="/tutorialtwo" className="next-button">Now try it yourself!</Link>
+        <Link to ="/tutorialthree" className="next-button">Now try it yourself!</Link>
     </div>
   );
 }
