@@ -120,8 +120,11 @@
     stroke-dasharray: 500;
     stroke-dashoffset: 500;
     animation: draw-edge 2s ease forwards;
+    animation: pulse ease-in 2s;
     animation-delay: var(--edge-delay,0s);
 }
+
+.constellation.true star
 
 /*.constellation.false .star-edge__line {*/
 /*    stroke: red;*/

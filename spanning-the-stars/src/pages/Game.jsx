@@ -25,6 +25,7 @@ export default function Game() {
 
   const [check, setCheck] = useState(() => () => {});
   function checkDone() {
+    console.log("what")
     check()
       return
   }

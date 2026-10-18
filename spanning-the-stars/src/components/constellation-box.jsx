@@ -225,6 +225,10 @@ export default function ConstellationBox({onCheckReady}){
 
     }
 
+    useEffect(() => {onCheckReady(()=>check);
+    },[onCheckReady,chosenEdges])
+
+
     return(
 
         <svg
