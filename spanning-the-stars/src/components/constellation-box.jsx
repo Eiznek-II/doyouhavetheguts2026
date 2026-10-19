@@ -98,7 +98,7 @@ export default function ConstellationBox({onCheckReady, stars}){
         const observer = new ResizeObserver(([entry]) => {
             const boxWidth = entry.contentRect.width;
             // as wide as the space allows, but never taller than 75% of the screen
-            const newSize = { width: boxWidth, height: Math.min(boxWidth, window.innerHeight * 0.75) };
+            const newSize = { width: boxWidth, height: Math.min(boxWidth, window.innerHeight * 0.5) };
             sizeRef.current = newSize;
             setSize(newSize);
         });
@@ -407,7 +407,7 @@ export default function ConstellationBox({onCheckReady, stars}){
 
                 //depending on order will have more delay, allows for done animations
                 style={{
-                    "--edge-delay": `${edgeOrder*2}s`
+                    "--edge-delay": `${edgeOrder*1.5}s`
                 }}
             >
                 {/* the line you see */}

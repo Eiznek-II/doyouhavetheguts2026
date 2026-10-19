@@ -6,7 +6,7 @@ import Dialogue from "../components/dialogue";
 
 export default function Tutorial() {
   return (
-    <div>
+    <div className="content">
         <h1>Tutorial</h1>
         <div className='tutorial_info'>
             <div className="character-box">
@@ -32,6 +32,14 @@ export default function Tutorial() {
                 {
                   type: "p",
                   text: "This is a 'greedy' algorithm which means it chooses the best, in this case the cheapest, option at each step. If the cheapest option is chosen at each step, the overall spanning tree will be the cheapest possible option. Very helpful for our intergalactic engineers!"
+                },
+                {
+                    type: "h2",
+                    text: "How do i actually do this algorithm?"
+                },
+                {
+                    type: "p",
+                    text: "start by choosing any vertex, depending on the starting vertex you could end up with a different tree however all options will lead to valid minimum spanning trees. From here look at the edges connected to the node you picked and pick the cheapest edge, connect this edge to the graph. then compare all the edges that are connected to this new graph and choose the cheapest again. Repeat this until all nodes are in the graph and you will have created the minimum spanning tree"
                 },
                 {
                   type: "h2",

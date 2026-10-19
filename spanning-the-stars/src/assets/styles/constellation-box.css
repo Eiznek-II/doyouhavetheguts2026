@@ -201,7 +201,7 @@
     stroke-dasharray: 1;   /* with pathLength="1" on the line, 1 = the whole line */
     stroke-dashoffset: 1;  /* start fully hidden */
     animation: draw-edge 2s ease forwards, pulse 2s ease-in-out;
-    animation-delay: var(--edge-delay, 0s), calc(var(--edge-delay, 0s) + 2s);
+    animation-delay: var(--edge-delay, 0s), calc(var(--edge-delay, 0s) + 1s);
 }
 
 /* WRONG ANSWER: the chosen edges flash red and shake, then go back to gold */

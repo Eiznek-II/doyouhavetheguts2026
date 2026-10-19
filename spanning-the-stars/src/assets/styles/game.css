@@ -13,6 +13,7 @@ h1, h2 {
     font-weight: 700;
     letter-spacing: 2px;
     color: #FFFFFF;
+    animation: blink 0.5s ease-in infinite;
 
     text-shadow: 0 0 10px #48ddfb;
 }
@@ -21,10 +22,11 @@ h2 {
 }
 
 
+
 /*change to 3 columns */
 .game-layout {
     display: grid;
-    grid-template-columns: 320px minmax(0, 1fr) 320px; 
+    grid-template-columns: 320px minmax(0, 1fr) 20px;
     gap: 24px;
     padding: 24px;
     box-sizing: border-box;

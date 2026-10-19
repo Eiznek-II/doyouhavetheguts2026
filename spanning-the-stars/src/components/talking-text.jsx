@@ -9,7 +9,7 @@ export default function TalkingText({ text }) {
       setDisplayed(text.slice(0, i));
       i++;
       if (i > text.length) clearInterval(interval);
-    }, 40);
+    }, 10);
     return () => clearInterval(interval);
   }, [text]);
 
