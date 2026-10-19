@@ -3,6 +3,10 @@
     padding-left: 10px;
 }
 
+.content{
+    padding:40px;
+}
+
 .next-button {
     display: inline-block;
     padding: 12px 24px;
